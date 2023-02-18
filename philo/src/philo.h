@@ -6,7 +6,7 @@
 /*   By: kkaczoro <kkaczoro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 14:43:30 by kkaczoro          #+#    #+#             */
-/*   Updated: 2023/02/18 14:48:18 by kkaczoro         ###   ########.fr       */
+/*   Updated: 2023/02/18 17:41:53 by kkaczoro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,17 @@
 # define TIME_TO_DIE 2
 # define TIME_TO_EAT 3
 # define TIME_TO_SLEEP 4
-# define NUMER_OF_TIMES_EACH_PHILOSOPHER_MUST_EAT 5
+# define NUMBER_OF_TIMES_EACH_PHILOSOPHER_MUST_EAT 5
+
+# define RED	"\x1B[31m"
+# define GREEN	"\x1B[32m"
+# define YELLOW	"\x1B[33m"
+# define BLUE	"\x1B[34m"
+# define MAGENTA	"\x1B[35m"
+# define CYAN	"\x1B[36m"
+# define WHITE	"\x1B[37m"
+# define RESET	"\x1B[0m"
+
+# include <stdio.h>
 
 #endif

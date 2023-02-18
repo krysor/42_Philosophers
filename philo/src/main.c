@@ -6,17 +6,18 @@
 /*   By: kkaczoro <kkaczoro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 14:36:08 by kkaczoro          #+#    #+#             */
-/*   Updated: 2023/02/18 14:46:25 by kkaczoro         ###   ########.fr       */
+/*   Updated: 2023/02/18 17:42:53 by kkaczoro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
+#include "philo.h"
 
 int	main(int argc, char *argv[])
 {
-	//(void)argv;
 	if (argc != 5 & argc != 6)
 		return (1);
-	printf("argv[1]: %s\n", argv[1]);
+		
+	printf("%sargv[1]: %s\n", RED, argv[1]);
+
 	return (0);
 }

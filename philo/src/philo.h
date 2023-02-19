@@ -30,4 +30,7 @@
 
 # include <stdio.h>
 
+int	ft_isdigit(int c);
+int	ft_atoi(const char *nptr);
+
 #endif

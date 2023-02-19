@@ -28,8 +28,15 @@
 # define WHITE		"\x1B[37m"
 # define RESET		"\x1B[0m"
 
-# include <stdio.h>
+# define BUFFER_SIZE 200
 
+# include <stdio.h>
+# include <pthread.h>
+
+typedef struct s_vars
+{
+	pthread_t	*buffer[BUFFER_SIZE];
+}					t_vars;
 int	ft_atoi(const char *nptr);
 
 #endif

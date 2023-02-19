@@ -12,21 +12,23 @@
 
 #include "philo.h"
 
+int	ft_return_min_one(t_vars *vars)
+{
+	return (-1);
+}
+
 int	main(int argc, char *argv[])
 {
+	t_vars	vars;
+	
 	if (argc != 5 && argc != 6)
 		return (1);
-		
-	int	i = 1;
-	printf("%sargv[%d]: %d\n", RED, i, ft_atoi(argv[i]));
-	i++;
-	printf("%sargv[%d]: %d\n", GREEN, i, ft_atoi(argv[i]));
-	i++;
-	printf("%sargv[%d]: %d\n", YELLOW, i, ft_atoi(argv[i]));
-	i++;
-	printf("%sargv[%d]: %d\n", BLUE, i, ft_atoi(argv[i]));
-	i++;
-	printf("%sargv[%d]: %d\n", MAGENTA, i, ft_atoi(argv[i]));
+
+	//printf("%sargv[%d]: %d\n", RED, 1, ft_atoi(argv[1]));
+
+	if (!pthread_create(vars->buffer[0], NULL, ft_return_min_one, &vars))
+		printf("pthread_create failed\n");	
+
 
 	return (0);
 }

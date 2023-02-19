@@ -12,6 +12,10 @@
 
 #include "philo.h"
 
+static int	ft_isspace(char chr);
+static int	ft_isdigit(int c);
+static int	ft_nbdigit(char *s);
+
 int	ft_atoi(const char *nptr)
 {
 	int		nb;
@@ -24,11 +28,8 @@ int	ft_atoi(const char *nptr)
 	while (ft_isspace(*str))
 		str++;
 	if (*str == '-')
-	{
 		sign = -1;
-		str++;
-	}
-	else if (*str == '+')
+	if (*str == '-' || *str == '+')
 		str++;
 	if (!ft_isdigit(*str) || (sign == -1
 			&& ft_nbdigit(str) > 19))
@@ -48,15 +49,19 @@ static int	ft_isspace(char chr)
 	return (0);
 }
 
-static	int	ft_nbdigit(char *s)
+static int	ft_isdigit(int c)
+{
+	if ('0' <= c && c <= '9')
+		return (1);
+	return (0);
+}
+
+static int	ft_nbdigit(char *s)
 {
 	int	nb;
 
 	nb = 0;
-	while (*s && ft_isdigit(*s))
-	{
+	while (s[nb] && ft_isdigit(s[nb]))
 		nb++;
-		s++;
-	}
 	return (nb);
 }

@@ -12,9 +12,12 @@
 
 #include "philo.h"
 
-int	ft_return_min_one(t_vars *vars)
+void	*ft_return_min_one(void *vars)
 {
-	return (-1);
+	(void)vars;
+	usleep(2000000);
+	printf("thread executed\n");
+	return (NULL);
 }
 
 int	main(int argc, char *argv[])
@@ -25,10 +28,16 @@ int	main(int argc, char *argv[])
 		return (1);
 
 	//printf("%sargv[%d]: %d\n", RED, 1, ft_atoi(argv[1]));
+	(void)argv;
+	
+	//vars.buffer[0] = malloc(sizeof(pthread_t));
 
-	if (!pthread_create(vars->buffer[0], NULL, ft_return_min_one, &vars))
-		printf("pthread_create failed\n");	
+	if (!pthread_create(&vars.buffer[0], NULL, &ft_return_min_one, &vars))
+		printf("pthread_create succeded\n");	
+	else
+		printf("pthread_create failed\n");
 
+	usleep(3000000);
 
 	return (0);
 }

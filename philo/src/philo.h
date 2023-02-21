@@ -32,10 +32,12 @@
 
 # include <stdio.h>
 # include <pthread.h>
+# include <unistd.h>
+# include <stdlib.h>
 
 typedef struct s_vars
 {
-	pthread_t	*buffer[BUFFER_SIZE];
+	pthread_t	buffer[BUFFER_SIZE];
 }					t_vars;
 int	ft_atoi(const char *nptr);
 

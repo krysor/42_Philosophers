@@ -6,7 +6,7 @@
 /*   By: kkaczoro <kkaczoro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 14:36:08 by kkaczoro          #+#    #+#             */
-/*   Updated: 2023/02/28 12:16:56 by kkaczoro         ###   ########.fr       */
+/*   Updated: 2023/02/28 14:23:32 by kkaczoro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,8 @@ int	main(int argc, char *argv[])
 	//printf("%sargv[%d]: %d\n", RED, 1, ft_atoi(argv[1]));
 	if (argc != 5 && argc != 6)
 		return (1);
-	init_vars(&vars, argc, argv);
+	if (init_vars(&vars, argc, argv))
+		return (2);
 	clean_vars(&vars);
 	return (0);
 }

@@ -6,18 +6,18 @@
 /*   By: kkaczoro <kkaczoro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 14:43:30 by kkaczoro          #+#    #+#             */
-/*   Updated: 2023/02/28 12:15:04 by kkaczoro         ###   ########.fr       */
+/*   Updated: 2023/02/28 14:30:53 by kkaczoro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PHILO_H
 # define PHILO_H
 
-# define NUMBER_OF_PHILOSOPHERS 					1
-# define TIME_TO_DIE 								2
-# define TIME_TO_EAT 								3
-# define TIME_TO_SLEEP 								4
-# define NUMBER_OF_TIMES_EACH_PHILOSOPHER_MUST_EAT 	5
+# define NUMBER_OF_PHILOSOPHERS 		1
+# define TIME_TO_DIE 					2
+# define TIME_TO_EAT 					3
+# define TIME_TO_SLEEP 					4
+# define NB_TIMES_EACH_PHILO_MUST_EAT	5
 
 # define RED		"\x1B[31m"
 # define GREEN		"\x1B[32m"
@@ -37,17 +37,20 @@
 
 typedef struct s_vars
 {
-	pthread_t	buffer[BUFFER_SIZE];
+	pthread_t		buffer_philo[BUFFER_SIZE];
+	pthread_mutex_t	buffer_fork[BUFFER_SIZE];
+	
 	int			nb_philos;
 	int			time_to_die;
 	int			time_to_eat;
 	int			time_to_sleep;
-	int			nb_times_must_eat;
+	int			nb_times_to_eat;
 }					t_vars;
 
 int		ft_atoi(const char *nptr);
-void	init_vars(t_vars *vars, int argc, char *argv[]);
-void	clean_vars(t_vars *vars);
 void	*routine(void *vars);
+int		init_vars(t_vars *vars, int argc, char *argv[]);
+void	clean_vars(t_vars *vars);
+
 
 #endif

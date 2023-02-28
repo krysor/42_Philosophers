@@ -6,7 +6,7 @@
 /*   By: kkaczoro <kkaczoro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 14:43:30 by kkaczoro          #+#    #+#             */
-/*   Updated: 2023/02/28 12:06:35 by kkaczoro         ###   ########.fr       */
+/*   Updated: 2023/02/28 12:15:04 by kkaczoro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ typedef struct s_vars
 }					t_vars;
 
 int		ft_atoi(const char *nptr);
-void	init_vars(t_vars *vars, char *argv[]);
+void	init_vars(t_vars *vars, int argc, char *argv[]);
 void	clean_vars(t_vars *vars);
 void	*routine(void *vars);
 

@@ -6,7 +6,7 @@
 /*   By: kkaczoro <kkaczoro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 12:02:29 by kkaczoro          #+#    #+#             */
-/*   Updated: 2023/02/28 14:41:51 by kkaczoro         ###   ########.fr       */
+/*   Updated: 2023/02/28 17:05:03 by kkaczoro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,10 +27,10 @@ int	init_vars(t_vars *vars, int argc, char *argv[])
 		|| vars->time_to_sleep < 0 || (argc == 6 && vars->nb_times_to_eat < 0))
 		return (1);
 	i = 0;
-	while (i < vars->nb_philos)
+	while (vars->i < vars->nb_philos)
 	{
-		if (pthread_create(&vars->buffer_philo[i], NULL, &routine, &vars)
-			|| pthread_mutex_init(&vars->buffer_fork[i], NULL))
+		if (pthread_create(&vars->buffer_philo[vars->i], NULL, &routine, &vars)
+			|| pthread_mutex_init(&vars->buffer_fork[vars->i], NULL))
 			return (1);
 		i++;
 	}

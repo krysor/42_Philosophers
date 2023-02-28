@@ -6,7 +6,7 @@
 /*   By: kkaczoro <kkaczoro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 14:43:30 by kkaczoro          #+#    #+#             */
-/*   Updated: 2023/02/28 14:30:53 by kkaczoro         ###   ########.fr       */
+/*   Updated: 2023/02/28 14:43:09 by kkaczoro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,14 +37,16 @@
 
 typedef struct s_vars
 {
+	int				dead;
+
+	int				nb_philos;
+	int				time_to_die;
+	int				time_to_eat;
+	int				time_to_sleep;
+	int				nb_times_to_eat;
+
 	pthread_t		buffer_philo[BUFFER_SIZE];
 	pthread_mutex_t	buffer_fork[BUFFER_SIZE];
-	
-	int			nb_philos;
-	int			time_to_die;
-	int			time_to_eat;
-	int			time_to_sleep;
-	int			nb_times_to_eat;
 }					t_vars;
 
 int		ft_atoi(const char *nptr);

@@ -6,7 +6,7 @@
 /*   By: kkaczoro <kkaczoro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 12:02:29 by kkaczoro          #+#    #+#             */
-/*   Updated: 2023/02/28 14:30:41 by kkaczoro         ###   ########.fr       */
+/*   Updated: 2023/02/28 14:41:51 by kkaczoro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ int	init_vars(t_vars *vars, int argc, char *argv[])
 {
 	int	i;
 	
+	vars->dead = 0;
 	vars->nb_philos = ft_atoi(argv[NUMBER_OF_PHILOSOPHERS]);
 	vars->time_to_die = ft_atoi(argv[TIME_TO_DIE]);
 	vars->time_to_eat = ft_atoi(argv[TIME_TO_EAT]);

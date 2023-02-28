@@ -1,27 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   clean_vars.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kkaczoro <kkaczoro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/02/18 14:36:08 by kkaczoro          #+#    #+#             */
-/*   Updated: 2023/02/28 12:06:42 by kkaczoro         ###   ########.fr       */
+/*   Created: 2023/02/28 12:03:36 by kkaczoro          #+#    #+#             */
+/*   Updated: 2023/02/28 12:03:45 by kkaczoro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-int	main(int argc, char *argv[])
+void	clean_vars(t_vars *vars)
 {
-	t_vars	vars;
+	int	i;
 	
-	//printf("%sargv[%d]: %d\n", RED, 1, ft_atoi(argv[1]));
-	if (argc != 5 && argc != 6)
-		return (1);
-
-	init_vars(&vars, argv);
-	clean_vars(&vars);
-
-	return (0);
+	i = 0;
+	while (i < vars->nb_philos)
+	{
+		pthread_join(vars->buffer[i++], NULL);
+	}
 }

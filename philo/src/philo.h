@@ -6,7 +6,7 @@
 /*   By: kkaczoro <kkaczoro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 14:43:30 by kkaczoro          #+#    #+#             */
-/*   Updated: 2023/02/28 11:55:59 by kkaczoro         ###   ########.fr       */
+/*   Updated: 2023/02/28 12:06:35 by kkaczoro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,10 @@ typedef struct s_vars
 	int			time_to_sleep;
 	int			nb_times_must_eat;
 }					t_vars;
-int	ft_atoi(const char *nptr);
+
+int		ft_atoi(const char *nptr);
+void	init_vars(t_vars *vars, char *argv[]);
+void	clean_vars(t_vars *vars);
+void	*routine(void *vars);
 
 #endif

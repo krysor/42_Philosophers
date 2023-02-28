@@ -33,11 +33,11 @@ int	main(int argc, char *argv[])
 	//vars.buffer[0] = malloc(sizeof(pthread_t));
 
 	if (!pthread_create(&vars.buffer[0], NULL, &ft_return_min_one, &vars))
-		printf("pthread_create succeded\n");	
+		printf("pthread_create succeded\n");
 	else
 		printf("pthread_create failed\n");
 
-	usleep(3000000);
+	//usleep(3000000);
 
 	return (0);
 }

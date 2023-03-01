@@ -6,7 +6,7 @@
 /*   By: kkaczoro <kkaczoro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 14:43:30 by kkaczoro          #+#    #+#             */
-/*   Updated: 2023/03/01 17:11:26 by kkaczoro         ###   ########.fr       */
+/*   Updated: 2023/03/01 17:26:40 by kkaczoro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,79 +60,6 @@ int		ft_atoi(const char *nptr);
 void	*routine(void *vars);
 int		init_vars(t_vars *vars, int argc, char *argv[]);
 int		philo_new(int i, t_vars *vars, void *(*routine)(void *));
-//int		philo_add(t_vars *vars, t_philo *new);
 int		philo_free_all(t_vars *vars);
 
 #endif
-
-
-
-
-// typedef struct s_philo	t_philo;
-// typedef struct s_vars
-// {	
-// 	int				nb_philos;
-// 	int				time_to_die;
-// 	int				time_to_eat;
-// 	int				time_to_sleep;
-// 	int				nb_times_to_eat;
-
-// 	t_philo			*philos;
-// 	int				dead;
-// }					t_vars;
-
-// typedef struct s_philo
-// {
-// 	t_vars			*vars;
-// 	int				odd;
-// 	pthread_t		thread;
-// 	pthread_mutex_t	fork_right;
-// 	pthread_mutex_t	*fork_left;
-// 	struct s_philo	*next;
-// }					t_philo;
-
-// int		ft_atoi(const char *nptr);
-// void	*routine(void *vars);
-// int		init_vars(t_vars *vars, int argc, char *argv[]);
-// t_philo	*philo_new(int i, t_vars *vars, void *(*routine)(void *));
-// int		philo_add(t_vars *vars, t_philo *new);
-// int		philo_free_all(t_vars *vars);
-
-
-
-
-
-
-
-
-
-
-// typedef struct s_philo	t_philo;
-// typedef struct s_vars
-// {	
-// 	int				nb_philos;
-// 	int				time_to_die;
-// 	int				time_to_eat;
-// 	int				time_to_sleep;
-// 	int				nb_times_to_eat;
-
-// 	t_philo			*philo_first;
-// 	int				dead;
-// }					t_vars;
-
-// typedef struct s_philo
-// {
-// 	t_vars			*vars;
-// 	int				odd;
-// 	pthread_t		thread;
-// 	pthread_mutex_t	fork_right;
-// 	pthread_mutex_t	*fork_left;
-// 	struct s_philo	*next;
-// }					t_philo;
-
-// int		ft_atoi(const char *nptr);
-// void	*routine(void *vars);
-// int		init_vars(t_vars *vars, int argc, char *argv[]);
-// t_philo	*philo_new(int i, t_vars *vars, void *(*routine)(void *));
-// int		philo_add(t_vars *vars, t_philo *new);
-// int		philo_free_all(t_vars *vars);

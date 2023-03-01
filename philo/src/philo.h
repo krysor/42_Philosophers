@@ -6,7 +6,7 @@
 /*   By: kkaczoro <kkaczoro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 14:43:30 by kkaczoro          #+#    #+#             */
-/*   Updated: 2023/03/01 11:08:41 by kkaczoro         ###   ########.fr       */
+/*   Updated: 2023/03/01 11:43:45 by kkaczoro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,18 @@
 # include <unistd.h>
 # include <stdlib.h>
 
+typedef struct s_vars
+{	
+	int				nb_philos;
+	int				time_to_die;
+	int				time_to_eat;
+	int				time_to_sleep;
+	int				nb_times_to_eat;
+
+	void			*philos;
+	int				dead;
+}					t_vars;
+
 typedef struct s_philo
 {
 	t_vars			*vars;
@@ -45,22 +57,11 @@ typedef struct s_philo
 	struct s_philo	*next;
 }					t_philo;
 
-typedef struct s_vars
-{
-	int				nb_philos;
-	int				time_to_die;
-	int				time_to_eat;
-	int				time_to_sleep;
-	int				nb_times_to_eat;
-
-	t_philo			*philos;
-	int				dead;
-}					t_vars;
-
 int		ft_atoi(const char *nptr);
 void	*routine(void *vars);
 int		init_vars(t_vars *vars, int argc, char *argv[]);
-void	clean_vars(t_vars *vars);
-
+t_philo	*philo_new(int i, t_vars *vars, void *(*routine)(void *));
+int		philo_add(void *philos, t_philo *new);
+int		philo_free_all(t_philo *philo);
 
 #endif

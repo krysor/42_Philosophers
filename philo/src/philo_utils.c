@@ -6,7 +6,7 @@
 /*   By: kkaczoro <kkaczoro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 10:11:41 by kkaczoro          #+#    #+#             */
-/*   Updated: 2023/03/01 11:22:22 by kkaczoro         ###   ########.fr       */
+/*   Updated: 2023/03/01 12:00:50 by kkaczoro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,30 +24,47 @@ t_philo	*philo_new(int i, t_vars *vars, void *(*routine)(void *))
 	if (pthread_create(&philo->thread, NULL, routine, philo)
 		|| pthread_mutex_init(&philo->fork_right, NULL))
 	{
-		pthread_join(philo->thread);
-		pthread_mutex_destroy(philo->mutex);
+		pthread_join(philo->thread, NULL);
+		pthread_mutex_destroy(&philo->fork_right);
 		free(philo);
 		return (NULL);
 	}
 	return (philo);
 }
 
-int	philo_add(t_philo *philos, t_philo *new)
+int	philo_add(void *philos, t_philo *new)
 {
+	t_philo	*philo;
 	t_philo	*temp;
 
 	if (!new)
 		return (1);
-	if (!philos)
+	philo = (t_philo *)philos;
+	if (!philo)
 	{
-		philos = new;
+		philo = new;
 		return (0);
 	}	
-	temp = philos;
+	temp = philo;
 	while (temp->next)
 		temp = temp->next;
 	temp->next = new;
 	new->fork_left = &temp->fork_right;
-	philos->fork_left = &temp->fork_right;
+	philo->fork_left = &temp->fork_right;
 	return (0);
+}
+
+int	philo_free_all(t_philo *philo)
+{
+	t_philo *temp;
+	
+	while (philo)
+	{
+		temp = philo->next;
+		pthread_join(philo->thread, NULL);
+		pthread_mutex_destroy(&philo->fork_right);
+		free(philo);
+		philo = temp;
+	}
+	return (1);
 }

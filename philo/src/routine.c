@@ -6,7 +6,7 @@
 /*   By: kkaczoro <kkaczoro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 12:06:13 by kkaczoro          #+#    #+#             */
-/*   Updated: 2023/03/01 17:19:10 by kkaczoro         ###   ########.fr       */
+/*   Updated: 2023/03/01 17:54:00 by kkaczoro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,13 @@
 
 void	*routine(void *pnt)
 {
-	t_vars	*vars;
+	t_philo	*philo;
 
-	vars = (t_vars *)pnt;
-	printf("im a philo\n");
-	
-	while (!vars->dead)
-	{
-		vars->dead = 1;
-	}
-	printf("philo returning\n");
+	philo = (t_philo *)pnt;
+	printf("im a philo nb %d\n", philo->i + 1);
+	// while (!philo->vars->dead)
+	// {
+	// 	philo->vars->dead = 1;
+	// }
 	return (NULL);
 }

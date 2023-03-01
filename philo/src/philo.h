@@ -6,7 +6,7 @@
 /*   By: kkaczoro <kkaczoro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 14:43:30 by kkaczoro          #+#    #+#             */
-/*   Updated: 2023/03/01 17:26:40 by kkaczoro         ###   ########.fr       */
+/*   Updated: 2023/03/01 17:42:59 by kkaczoro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ typedef struct s_vars
 typedef struct s_philo
 {
 	t_vars			*vars;
-	int				odd;
+	int				i;
 	pthread_t		thread;
 	pthread_mutex_t	fork_left;
 }					t_philo;

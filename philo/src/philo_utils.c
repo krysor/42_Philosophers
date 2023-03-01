@@ -6,7 +6,7 @@
 /*   By: kkaczoro <kkaczoro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 10:11:41 by kkaczoro          #+#    #+#             */
-/*   Updated: 2023/03/01 17:26:53 by kkaczoro         ###   ########.fr       */
+/*   Updated: 2023/03/01 17:53:25 by kkaczoro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,9 @@ int	philo_new(int i, t_vars *vars, void *(*routine)(void *))
 
 	philo = &vars->philos[i];
 	philo->vars = vars;
-	philo->odd = i % 2;
+	philo->i = i;
 	if (pthread_mutex_init(&philo->fork_left, NULL)
-		|| pthread_create(&philo->thread, NULL, routine, &philo))
+		|| pthread_create(&philo->thread, NULL, routine, &vars->philos[i]))
 	{
 		pthread_join(philo->thread, NULL);
 		pthread_mutex_destroy(&philo->fork_left);

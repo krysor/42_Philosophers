@@ -6,7 +6,7 @@
 /*   By: kkaczoro <kkaczoro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 14:43:30 by kkaczoro          #+#    #+#             */
-/*   Updated: 2023/02/28 16:27:11 by kkaczoro         ###   ########.fr       */
+/*   Updated: 2023/03/01 11:08:41 by kkaczoro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,19 +35,26 @@
 # include <unistd.h>
 # include <stdlib.h>
 
+typedef struct s_philo
+{
+	t_vars			*vars;
+	int				odd;
+	pthread_t		thread;
+	pthread_mutex_t	fork_right;
+	pthread_mutex_t	*fork_left;
+	struct s_philo	*next;
+}					t_philo;
+
 typedef struct s_vars
 {
-	int				i;
-	int				dead;
-
 	int				nb_philos;
 	int				time_to_die;
 	int				time_to_eat;
 	int				time_to_sleep;
 	int				nb_times_to_eat;
 
-	pthread_t		buffer_philo[BUFFER_SIZE];
-	pthread_mutex_t	buffer_fork[BUFFER_SIZE];
+	t_philo			*philos;
+	int				dead;
 }					t_vars;
 
 int		ft_atoi(const char *nptr);

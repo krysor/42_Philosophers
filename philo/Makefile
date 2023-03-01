@@ -1,9 +1,9 @@
 CFILES	= 	\
 			main.c \
 			ft_atoi.c \
+			philo_utils.c \
 			routine.c \
 			init_vars.c \
-			clean_vars.c \
 			
 SRCS 	= $(addprefix src/, ${CFILES})
 

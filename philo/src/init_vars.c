@@ -6,7 +6,7 @@
 /*   By: kkaczoro <kkaczoro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 12:02:29 by kkaczoro          #+#    #+#             */
-/*   Updated: 2023/02/28 17:05:03 by kkaczoro         ###   ########.fr       */
+/*   Updated: 2023/03/01 11:22:26 by kkaczoro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,8 @@
 
 int	init_vars(t_vars *vars, int argc, char *argv[])
 {
-	int	i;
+	int		i;
+	t_philo	philo;
 	
 	vars->dead = 0;
 	vars->nb_philos = ft_atoi(argv[NUMBER_OF_PHILOSOPHERS]);
@@ -27,12 +28,25 @@ int	init_vars(t_vars *vars, int argc, char *argv[])
 		|| vars->time_to_sleep < 0 || (argc == 6 && vars->nb_times_to_eat < 0))
 		return (1);
 	i = 0;
-	while (vars->i < vars->nb_philos)
+	while (i < vars->nb_philos)
 	{
-		if (pthread_create(&vars->buffer_philo[vars->i], NULL, &routine, &vars)
-			|| pthread_mutex_init(&vars->buffer_fork[vars->i], NULL))
-			return (1);
-		i++;
+		if (!philo_add(vars->philos, philo_new(i++, vars, routine)))
+			return (philo_free_all(vars->philos));
 	}
 	return (0);
+}
+
+int	philo_free_all(t_philo *philo)
+{
+	t_philo *temp;
+	
+	while (philo)
+	{
+		temp = philo->next;
+		pthread_join(philo->thread);
+		pthread_mutex_destroy(philo->mutex);
+		free(philo);
+		philo = temp;
+	}
+	return (1);
 }

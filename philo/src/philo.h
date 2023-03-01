@@ -6,7 +6,7 @@
 /*   By: kkaczoro <kkaczoro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 14:43:30 by kkaczoro          #+#    #+#             */
-/*   Updated: 2023/03/01 17:42:59 by kkaczoro         ###   ########.fr       */
+/*   Updated: 2023/03/01 17:58:41 by kkaczoro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,6 @@
 # define CYAN		"\x1B[36m"
 # define WHITE		"\x1B[37m"
 # define RESET		"\x1B[0m"
-
-# define BUFFER_SIZE 200
 
 # include <stdio.h>
 # include <pthread.h>

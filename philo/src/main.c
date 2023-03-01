@@ -6,7 +6,7 @@
 /*   By: kkaczoro <kkaczoro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 14:36:08 by kkaczoro          #+#    #+#             */
-/*   Updated: 2023/03/01 12:04:58 by kkaczoro         ###   ########.fr       */
+/*   Updated: 2023/03/01 13:55:29 by kkaczoro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	main(int argc, char *argv[])
 		return (1);
 	if (init_vars(&vars, argc, argv))
 		return (2);
-	philo_free_all(vars.philos);
+	philo_free_all(&vars);
 	//system("leaks philo");
 	return (0);
 }

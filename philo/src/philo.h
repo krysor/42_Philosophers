@@ -6,7 +6,7 @@
 /*   By: kkaczoro <kkaczoro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 14:43:30 by kkaczoro          #+#    #+#             */
-/*   Updated: 2023/03/02 11:45:04 by kkaczoro         ###   ########.fr       */
+/*   Updated: 2023/03/02 12:57:32 by kkaczoro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ typedef struct s_vars
 	t_philo			*philos;
 	int				dead;
 
-	pthread_mutex_t	mtx;
+	pthread_mutex_t	mutex;
 
 }					t_vars;
 

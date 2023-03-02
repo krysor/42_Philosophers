@@ -6,7 +6,7 @@
 /*   By: kkaczoro <kkaczoro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 10:11:41 by kkaczoro          #+#    #+#             */
-/*   Updated: 2023/03/02 11:46:27 by kkaczoro         ###   ########.fr       */
+/*   Updated: 2023/03/02 12:57:53 by kkaczoro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,6 @@ int	philo_free_all(t_vars *vars)
 		i++;
 	}
 	free(vars->philos);
-
-	pthread_mutex_destroy(&vars->mtx);
-
+	pthread_mutex_destroy(&vars->mutex);
 	return (1);
 }

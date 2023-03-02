@@ -6,7 +6,7 @@
 /*   By: kkaczoro <kkaczoro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 12:02:29 by kkaczoro          #+#    #+#             */
-/*   Updated: 2023/03/02 12:15:41 by kkaczoro         ###   ########.fr       */
+/*   Updated: 2023/03/02 13:16:28 by kkaczoro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 int	init_vars(t_vars *vars, int argc, char *argv[])
 {
 	int	i;
-	
+
 	vars->nb_philos = ft_atoi(argv[NUMBER_OF_PHILOSOPHERS]);
 	vars->time_to_die = ft_atoi(argv[TIME_TO_DIE]);
 	vars->time_to_eat = ft_atoi(argv[TIME_TO_EAT]);
@@ -28,16 +28,14 @@ int	init_vars(t_vars *vars, int argc, char *argv[])
 		|| !vars->philos)
 		return (1);
 	vars->dead = 0;
-
-	pthread_mutex_init(&vars->mtx, NULL);
-	pthread_mutex_lock(&vars->mtx);
-
+	if (pthread_mutex_init(&vars->mutex, NULL))
+		return (philo_free_all(vars));
+	pthread_mutex_lock(&vars->mutex);//necessary or not?
 	i = 0;
 	while (i < vars->nb_philos)
 	{
-		if (philo_new(i, vars, routine))
+		if (philo_new(i++, vars, routine))
 			return (philo_free_all(vars));
-		i++;
 	}
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: kkaczoro <kkaczoro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 14:36:08 by kkaczoro          #+#    #+#             */
-/*   Updated: 2023/03/02 12:16:27 by kkaczoro         ###   ########.fr       */
+/*   Updated: 2023/03/02 13:16:01 by kkaczoro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	main(int argc, char *argv[])
 		return (1);
 	if (init_vars(&vars, argc, argv))
 		return (2);
-	pthread_mutex_unlock(&vars.mtx);
+	pthread_mutex_unlock(&vars.mutex);//necessary or not?
 	philo_free_all(&vars);
 	//system("leaks philo");
 	return (0);

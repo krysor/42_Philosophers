@@ -6,7 +6,7 @@
 /*   By: kkaczoro <kkaczoro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 14:43:30 by kkaczoro          #+#    #+#             */
-/*   Updated: 2023/03/02 12:57:32 by kkaczoro         ###   ########.fr       */
+/*   Updated: 2023/03/02 18:04:55 by kkaczoro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@
 # include <pthread.h>
 # include <unistd.h>
 # include <stdlib.h>
+# include <sys/time.h>
 
 typedef struct s_philo	t_philo;
 typedef struct s_vars
@@ -42,24 +43,28 @@ typedef struct s_vars
 	int				time_to_sleep;
 	int				nb_times_to_eat;
 
+	int				argc;
 	t_philo			*philos;
-	int				dead;
 
+	int				dead;
 	pthread_mutex_t	mutex;
 
+	struct timeval	time_start;
 }					t_vars;
 
 typedef struct s_philo
 {
 	t_vars			*vars;
 	int				i;
+	int				time_to_die;
+	int				nb_times_to_eat;
 	pthread_t		thread;
 	pthread_mutex_t	fork_left;
 }					t_philo;
 
 int		ft_atoi(const char *nptr);
 void	*routine(void *vars);
-int		init_vars(t_vars *vars, int argc, char *argv[]);
+int		init_vars(t_vars *vars, char *argv[]);
 int		philo_new(int i, t_vars *vars, void *(*routine)(void *));
 int		philo_free_all(t_vars *vars);
 

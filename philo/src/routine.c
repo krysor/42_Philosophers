@@ -6,7 +6,7 @@
 /*   By: kkaczoro <kkaczoro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 12:06:13 by kkaczoro          #+#    #+#             */
-/*   Updated: 2023/03/01 17:54:00 by kkaczoro         ###   ########.fr       */
+/*   Updated: 2023/03/02 12:51:11 by kkaczoro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,17 @@ void	*routine(void *pnt)
 	philo = (t_philo *)pnt;
 	printf("im a philo nb %d\n", philo->i + 1);
 	
-	while (!philo->vars->dead)
+	while (1)
 	{
-	 	//if (philo->i % 2 == 0)
-		//	philo->vars->dead = 1;
+		pthread_mutex_lock(&philo->vars->mtx);
+		if (philo->vars->dead == 0)
+			philo->vars->dead = 1;
+		else
+		{
+			pthread_mutex_unlock(&philo->vars->mtx);
+			break ;
+		}
+		pthread_mutex_unlock(&philo->vars->mtx);
 	}
 
 	return (NULL);

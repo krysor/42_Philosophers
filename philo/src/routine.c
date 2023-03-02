@@ -18,9 +18,12 @@ void	*routine(void *pnt)
 
 	philo = (t_philo *)pnt;
 	printf("im a philo nb %d\n", philo->i + 1);
-	// while (!philo->vars->dead)
-	// {
-	// 	philo->vars->dead = 1;
-	// }
+	
+	while (!philo->vars->dead)
+	{
+	 	//if (philo->i % 2 == 0)
+		//	philo->vars->dead = 1;
+	}
+
 	return (NULL);
 }

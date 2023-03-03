@@ -6,7 +6,7 @@
 /*   By: kkaczoro <kkaczoro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 12:06:13 by kkaczoro          #+#    #+#             */
-/*   Updated: 2023/03/02 18:28:02 by kkaczoro         ###   ########.fr       */
+/*   Updated: 2023/03/03 12:39:47 by kkaczoro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,9 +55,9 @@ static int	eat(t_philo *philo)
 	printf("philo %d has eaten\n", philo->i + 1);//replace this with custom function
 	philo->nb_times_to_eat--;
 	philo->time_to_die = philo->vars->time_to_die;
-	if (pthread_mutex_unlock(&philo->fork_left))
-		return (1);
 	if (pthread_mutex_unlock(&philo->vars->philos[i_philo_right].fork_left))
+		return (1);
+	if (pthread_mutex_unlock(&philo->fork_left))
 		return (1);
 	return (0);
 }
@@ -76,7 +76,7 @@ static int	all_philos_alive(t_vars *vars)
 	return (result);
 }
 
-// //static void	wait_until(struct timeval *time_start, suseconds_t interval)
+//static void	wait_until(struct timeval *time_start, suseconds_t interval)
 // static void	wait_until(t_philo *philo, suseconds_t interval)
 // {
 // 	struct timeval	time;
@@ -89,8 +89,8 @@ static int	all_philos_alive(t_vars *vars)
 // 		// < time.tv_sec * 1000 + time.tv_usec)
 // 	//printf("time_start.tv_sec * 1000 + time_start.tv_usec: %d\n", time_start.tv_usec);
 	
-// 	while (time_start.tv_sec * 1000 + time_start.tv_usec
-// 			>= time.tv_sec * 1000 + time.tv_usec - interval)
+// 	while (time_start.tv_sec * 1000000 + time_start.tv_usec
+// 			>= time.tv_sec * 1000000 + time.tv_usec - interval)
 // 	{
 // 		printf("philo nb %d waiting\n", philo->i + 1);
 // 		usleep(50);

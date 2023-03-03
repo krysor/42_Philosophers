@@ -6,7 +6,7 @@
 /*   By: kkaczoro <kkaczoro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 10:11:41 by kkaczoro          #+#    #+#             */
-/*   Updated: 2023/03/02 18:05:40 by kkaczoro         ###   ########.fr       */
+/*   Updated: 2023/03/03 12:38:09 by kkaczoro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,11 +38,10 @@ int	philo_free_all(t_vars *vars)
 	
 	i = 0;
 	while (i < vars->nb_philos)
-	{
-		pthread_join(vars->philos[i].thread, NULL);
-		pthread_mutex_destroy(&vars->philos[i].fork_left);
-		i++;
-	}
+		pthread_join(vars->philos[i++].thread, NULL);
+	i = 0;
+	while (i < vars->nb_philos)
+		pthread_mutex_destroy(&vars->philos[i++].fork_left);
 	free(vars->philos);
 	pthread_mutex_destroy(&vars->mutex);
 	return (1);

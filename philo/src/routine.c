@@ -6,7 +6,7 @@
 /*   By: kkaczoro <kkaczoro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 12:06:13 by kkaczoro          #+#    #+#             */
-/*   Updated: 2023/03/03 12:39:47 by kkaczoro         ###   ########.fr       */
+/*   Updated: 2023/03/03 15:32:39 by kkaczoro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,23 +14,25 @@
 
 static int	eat(t_philo *philo);
 static int	all_philos_alive(t_vars *vars);
-//static void	wait_until(struct timeval *time_start, suseconds_t interval);
-// static void	wait_until(t_philo *philo, suseconds_t interval);
+static void	wait_interval(struct timeval *time_start, suseconds_t interval);
+//static void	wait_until(t_philo *philo, suseconds_t interval);
+void	print_message(t_philo *philo, char *msg);
 
 void	*routine(void *pnt)
 {
 	t_philo	*philo;
 
 	philo = (t_philo *)pnt;
-	if (philo->i % 2)
+	if (all_philos_alive(philo->vars) && philo->i % 2)
 	{
-		if (usleep(philo->vars->time_to_eat * 1000))
-			return (NULL);
+		// if (usleep(philo->vars->time_to_eat * 1000))
+		// 	return (NULL);
+		wait_interval(&philo->vars->time_start, philo->vars->time_to_eat * 1000);
 		philo->time_to_die -= philo->vars->time_to_eat;
 	}
 	while (all_philos_alive(philo->vars) && philo->time_to_die > 0)
 	{
-		if (eat(philo))
+		if (philo->vars->nb_philos != 1 && eat(philo))//not sure if first part of statement necessary to circumvent the rand case with only 1 philo and 1 fork, may occure with multiple as well
 			return (NULL);
 
 		//add death
@@ -52,7 +54,7 @@ static int	eat(t_philo *philo)
 		i_philo_right = 0;
 	if (pthread_mutex_lock(&philo->vars->philos[i_philo_right].fork_left))
 		return (1);
-	printf("philo %d has eaten\n", philo->i + 1);//replace this with custom function
+	print_message(philo, "is eating");
 	philo->nb_times_to_eat--;
 	philo->time_to_die = philo->vars->time_to_die;
 	if (pthread_mutex_unlock(&philo->vars->philos[i_philo_right].fork_left))
@@ -76,24 +78,38 @@ static int	all_philos_alive(t_vars *vars)
 	return (result);
 }
 
-//static void	wait_until(struct timeval *time_start, suseconds_t interval)
-// static void	wait_until(t_philo *philo, suseconds_t interval)
-// {
-// 	struct timeval	time;
-	
-// 	struct timeval	time_start = philo->vars->time_start;
+static void wait_interval(struct timeval *time_start, suseconds_t interval)
+//static void	wait_until(t_philo *philo, suseconds_t interval)
+{
+	struct timeval	time;
+	//struct timeval	*time_start;
 
-// 	if (gettimeofday(&time, NULL))
-// 		return ;
-// 	// while (time_start->tv_sec * 1000 + time_start->tv_usec + interval
-// 		// < time.tv_sec * 1000 + time.tv_usec)
-// 	//printf("time_start.tv_sec * 1000 + time_start.tv_usec: %d\n", time_start.tv_usec);
+	//time_start = &philo->vars->time_start;
+	if (gettimeofday(&time, NULL))
+		return ;
+	while (((time.tv_sec - time_start->tv_sec) * 1000000 
+			+ time.tv_usec - time_start->tv_usec) < interval)
+	{
+		usleep(100);
+		if (gettimeofday(&time, NULL))
+			return ;
+	}
+}
+
+void	print_message(t_philo *philo, char *msg)
+{
+	struct timeval	time;
+	struct timeval	*time_start;
+	char			color[6];
+	int				i;
 	
-// 	while (time_start.tv_sec * 1000000 + time_start.tv_usec
-// 			>= time.tv_sec * 1000000 + time.tv_usec - interval)
-// 	{
-// 		printf("philo nb %d waiting\n", philo->i + 1);
-// 		usleep(50);
-// 		gettimeofday(&time, NULL);
-// 	}
-// }
+	i = -1;
+	while (++i < 6)
+		color[i] = RED[i];
+	color[3] = '1' + (philo->i % 7); 
+	time_start = &philo->vars->time_start;
+	if (gettimeofday(&time, NULL))
+		return ;
+	printf("%s[%ld.%d] %d %s\n", color, time.tv_sec - time_start->tv_sec, 
+		time_start->tv_usec, philo->i + 1, msg);
+}

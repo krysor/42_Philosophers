@@ -6,7 +6,7 @@
 /*   By: kkaczoro <kkaczoro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 12:06:13 by kkaczoro          #+#    #+#             */
-/*   Updated: 2023/03/03 15:32:39 by kkaczoro         ###   ########.fr       */
+/*   Updated: 2023/03/03 15:51:50 by kkaczoro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,6 +110,11 @@ void	print_message(t_philo *philo, char *msg)
 	time_start = &philo->vars->time_start;
 	if (gettimeofday(&time, NULL))
 		return ;
-	printf("%s[%ld.%d] %d %s\n", color, time.tv_sec - time_start->tv_sec, 
-		time_start->tv_usec, philo->i + 1, msg);
+	
+	// printf("time.tv_sec: %ld\n" RESET, time.tv_sec);
+	// printf("time_start->tv_sec: %ld\n", time_start->tv_sec);
+	
+	printf("%s[%ld.%d] %d %s\n",
+		color, time.tv_sec - time_start->tv_sec,
+		time_start->tv_usec - time_start->tv_usec, philo->i + 1, msg);
 }

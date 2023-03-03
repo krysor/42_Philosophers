@@ -6,7 +6,7 @@
 /*   By: kkaczoro <kkaczoro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 12:06:13 by kkaczoro          #+#    #+#             */
-/*   Updated: 2023/03/03 15:51:50 by kkaczoro         ###   ########.fr       */
+/*   Updated: 2023/03/03 16:53:24 by kkaczoro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,9 @@ static int	all_philos_alive(t_vars *vars);
 static void	wait_interval(struct timeval *time_start, suseconds_t interval);
 //static void	wait_until(t_philo *philo, suseconds_t interval);
 void	print_message(t_philo *philo, char *msg);
+
+void	save_time_difference(struct timeval *difference, 
+			struct timeval *start, struct timeval *end);
 
 void	*routine(void *pnt)
 {
@@ -99,6 +102,7 @@ static void wait_interval(struct timeval *time_start, suseconds_t interval)
 void	print_message(t_philo *philo, char *msg)
 {
 	struct timeval	time;
+	struct timeval	time_difference;
 	struct timeval	*time_start;
 	char			color[6];
 	int				i;
@@ -107,14 +111,29 @@ void	print_message(t_philo *philo, char *msg)
 	while (++i < 6)
 		color[i] = RED[i];
 	color[3] = '1' + (philo->i % 7); 
+	
 	time_start = &philo->vars->time_start;
 	if (gettimeofday(&time, NULL))
 		return ;
+	save_time_difference(&time_difference, time_start, &time);
+	printf("%s[%5ld.%03d] %d %s\n",
+		color, time_difference.tv_sec * 1000 + time_difference.tv_usec / 1000,
+			time_difference.tv_usec % 1000, philo->i + 1, msg);
+}
+
+void	save_time_difference(struct timeval *difference, 
+			struct timeval *start, struct timeval *end)
+{
+	int	a;
+	int	b;
 	
-	// printf("time.tv_sec: %ld\n" RESET, time.tv_sec);
-	// printf("time_start->tv_sec: %ld\n", time_start->tv_sec);
-	
-	printf("%s[%ld.%d] %d %s\n",
-		color, time.tv_sec - time_start->tv_sec,
-		time_start->tv_usec - time_start->tv_usec, philo->i + 1, msg);
+	a = 0;
+	b = 0;
+	if (end->tv_usec - start->tv_usec < 0)
+	{
+		a = 1000000;
+		b = 1;
+	}
+	difference->tv_usec = end->tv_usec + a - start->tv_usec;
+	difference->tv_sec = end->tv_sec - b - start->tv_sec;
 }

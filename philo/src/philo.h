@@ -62,6 +62,8 @@ typedef struct s_philo
 	int				nb_times_to_eat;
 	pthread_t		thread;
 	pthread_mutex_t	fork_left;
+
+	struct timeval	time_last_meal;
 }					t_philo;
 
 int		ft_atoi(const char *nptr);

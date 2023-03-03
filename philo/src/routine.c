@@ -66,6 +66,7 @@ static int	eat(t_philo *philo)
 	print_message(philo, "is eating");
 
 	usleep(philo->vars->time_to_eat * 1000);//gotta cahnge to custom waiting function
+	
 	philo->nb_times_to_eat--;
 	philo->time_to_die = philo->vars->time_to_die;
 	if (pthread_mutex_unlock(&philo->vars->philos[i_philo_right].fork_left))
@@ -125,7 +126,8 @@ void	print_message(t_philo *philo, char *msg)
 	set_time_difference(&time_difference, &time_start, &time);
 	printf("%s[%5ld.%03d] %d %s\n",
 		color, time_difference.tv_sec * 1000 + time_difference.tv_usec / 1000,
-			time_difference.tv_usec % 1000, philo->i + 1, msg);
+			(int)(time_difference.tv_usec % 1000), philo->i + 1, msg);
+			//undo the int cast for mac
 }
 
 void	set_time_difference(struct timeval *difference, 

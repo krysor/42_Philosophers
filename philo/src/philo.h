@@ -57,8 +57,9 @@ typedef struct s_vars
 typedef struct s_philo
 {
 	t_vars			*vars;
+	
 	int				i;
-	int				time_to_die;
+	//int				time_to_die;
 	int				nb_times_to_eat;
 	pthread_t		thread;
 	pthread_mutex_t	fork_left;
@@ -71,5 +72,10 @@ void	*routine(void *vars);
 int		init_vars(t_vars *vars, char *argv[]);
 int		philo_new(int i, t_vars *vars, void *(*routine)(void *));
 int		philo_free_all(t_vars *vars);
+
+int		all_philos_alive(t_vars *vars);
+void	set_time_difference(struct timeval *difference, 
+			struct timeval *start, struct timeval *end);
+void	print_message(t_philo *philo, char *msg);
 
 #endif

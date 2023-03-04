@@ -19,7 +19,9 @@ int	philo_new(int i, t_vars *vars, void *(*routine)(void *))
 	philo = &vars->philos[i];
 	philo->vars = vars;
 	philo->i = i;
-	philo->time_to_die = vars->time_to_die;
+	//philo->time_to_die = vars->time_to_die;
+	if (gettimeofday(&philo->time_last_meal, NULL))
+		return (1);
 	if (vars->argc == 6)
 		philo->nb_times_to_eat = vars->nb_times_to_eat;
 	if (pthread_mutex_init(&philo->fork_left, NULL)

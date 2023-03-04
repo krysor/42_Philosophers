@@ -6,7 +6,7 @@
 /*   By: kkaczoro <kkaczoro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 14:43:30 by kkaczoro          #+#    #+#             */
-/*   Updated: 2023/03/03 15:25:33 by kkaczoro         ###   ########.fr       */
+/*   Updated: 2023/03/04 13:10:43 by kkaczoro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ typedef struct s_vars
 	int				argc;
 	t_philo			*philos;
 
-	int				dead;
+	int				nb_finished_philos;
 	pthread_mutex_t	mutex;
 
 	struct timeval	time_start;

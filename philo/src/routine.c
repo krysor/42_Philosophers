@@ -6,7 +6,7 @@
 /*   By: kkaczoro <kkaczoro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 12:06:13 by kkaczoro          #+#    #+#             */
-/*   Updated: 2023/03/03 17:41:18 by kkaczoro         ###   ########.fr       */
+/*   Updated: 2023/03/04 13:06:46 by kkaczoro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,19 +32,22 @@ void	*routine(void *pnt)
 		wait_interval(&philo->vars->time_start, philo->vars->time_to_eat * 1000);
 		//philo->time_to_die -= philo->vars->time_to_eat;
 	}
-	while (all_philos_alive(philo->vars) && (1 || (vars->argc == 6 && philo->nb_times_to_eat)))//&& philo->time_to_die > 0)
+	while (all_philos_alive(philo->vars))//&& philo->time_to_die > 0)
 	{
 		if (philo->vars->nb_philos != 1 && eat(philo))//not sure if first part of statement necessary to circumvent the rand case with only 1 philo and 1 fork, may occure with multiple as well
-			return (NULL);
-
+			break ;
+	
+		if (philo->vars->argc == 6 && philo->nb_times_to_eat)
+		{
+			
+			break ;
+		}	
+			
 		print_message(philo, "is sleeping");
 		usleep(philo->vars->time_to_sleep * 1000);
 		//philo->time_to_die -= philo->vars->time_to_sleep;
 
 		print_message(philo, "is thinking");
-					
-		if (philo->vars->argc == 6 && !philo->nb_times_to_eat)
-			return (NULL);
 	}
 	return (NULL);
 }
@@ -52,7 +55,7 @@ void	*routine(void *pnt)
 static int	eat(t_philo *philo)
 {
 	int	i_philo_right;
-	
+		
 	if (pthread_mutex_lock(&philo->fork_left))
 		return (1);
 	print_message(philo, "has taken a fork");
@@ -63,15 +66,12 @@ static int	eat(t_philo *philo)
 		return (1);
 	print_message(philo, "has taken a fork");
 	print_message(philo, "is eating");
+	if (gettimeofday(&philo->time_last_meal, NULL))
+		return (1);
+	philo->nb_times_to_eat--;
 
 	usleep(philo->vars->time_to_eat * 1000);//gotta cahnge to custom waiting function
 	
-	philo->nb_times_to_eat--;
-	
-	//philo->time_to_die = philo->vars->time_to_die;
-	if (gettimeofday(&philo->time_last_meal, NULL))
-		return (1);
-
 	if (pthread_mutex_unlock(&philo->vars->philos[i_philo_right].fork_left))
 		return (1);
 	if (pthread_mutex_unlock(&philo->fork_left))
@@ -86,7 +86,7 @@ int	all_philos_alive(t_vars *vars)
 	result = 1;
 	if (pthread_mutex_lock(&vars->mutex))
 		return (0);
-	if (vars->dead == 1)
+	if (vars->nb_finished_philos != -1)
 		result = 0;
 	if (pthread_mutex_unlock(&vars->mutex))
 		return (0);

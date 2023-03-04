@@ -6,7 +6,7 @@
 /*   By: kkaczoro <kkaczoro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 12:06:13 by kkaczoro          #+#    #+#             */
-/*   Updated: 2023/03/04 13:06:46 by kkaczoro         ###   ########.fr       */
+/*   Updated: 2023/03/04 14:32:35 by kkaczoro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,9 @@ void	*routine(void *pnt)
 		if (philo->vars->nb_philos != 1 && eat(philo))//not sure if first part of statement necessary to circumvent the rand case with only 1 philo and 1 fork, may occure with multiple as well
 			break ;
 	
-		if (philo->vars->argc == 6 && philo->nb_times_to_eat)
+		if (philo->vars->argc == 6 && !philo->nb_times_to_eat)
 		{
-			
+			philo->vars->nb_philos_to_finish--;			
 			break ;
 		}	
 			
@@ -81,16 +81,13 @@ static int	eat(t_philo *philo)
 
 int	all_philos_alive(t_vars *vars)
 {
-	int	result;
-	
-	result = 1;
-	if (pthread_mutex_lock(&vars->mutex))
-		return (0);
-	if (vars->nb_finished_philos != -1)
-		result = 0;
-	if (pthread_mutex_unlock(&vars->mutex))
-		return (0);
-	return (result);
+	// if (pthread_mutex_lock(&vars->mutex))
+	// 	return (0);
+	if (!vars->stop)
+		return (1);
+	// if (pthread_mutex_unlock(&vars->mutex))
+	// 	return (0);
+	return (0);
 }
 
 static void wait_interval(struct timeval *time_start, suseconds_t interval)

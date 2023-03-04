@@ -6,13 +6,13 @@
 /*   By: kkaczoro <kkaczoro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 14:36:08 by kkaczoro          #+#    #+#             */
-/*   Updated: 2023/03/04 13:12:36 by kkaczoro         ###   ########.fr       */
+/*   Updated: 2023/03/04 14:27:11 by kkaczoro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	philo_stop(t_vars *vars, int i);
+void	set_stop(t_vars *vars);
 int		check_if_dead(t_vars *vars);
 
 int	main(int argc, char *argv[])
@@ -26,24 +26,24 @@ int	main(int argc, char *argv[])
 	if (init_vars(&vars, argv))
 		return (2);
 	if (gettimeofday(&vars.time_start, NULL) || pthread_mutex_unlock(&vars.mutex))
-		philo_stop(&vars, 0);
-	while (all_philos_alive(&vars))
+		set_stop(&vars);
+	//printf("%sAm I here?1\n", RESET);
+	while (all_philos_alive(&vars) && vars.nb_philos_to_finish)
 	{
+		//printf("%sAm I here?2\n", RESET);
 		if (check_if_dead(&vars))
 			break ;
 	}
+	//printf("%sAm I here?3\n", RESET);
 	philo_free_all(&vars);
 	//system("leaks philo");
 	return (0);
 }
 
-void	philo_stop(t_vars *vars, int i)
+void	set_stop(t_vars *vars)
 {
 	pthread_mutex_lock(&vars->mutex);
-	if (i)
-		vars->nb_finished_philos++;
-	else
-		vars->nb_finished_philos = -1;
+	vars->stop = 1;
 	pthread_mutex_unlock(&vars->mutex);
 }
 
@@ -65,7 +65,7 @@ int	check_if_dead(t_vars *vars)
 			> vars->time_to_die)
 		{
 			print_message(&vars->philos[i], "died");
-			philo_stop(vars, 0);
+			set_stop(vars);
 			return (1);
 		}
 	}

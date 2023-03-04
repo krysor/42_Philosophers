@@ -25,13 +25,17 @@ int	main(int argc, char *argv[])
 	vars.argc = argc;
 	if (init_vars(&vars, argv))
 		return (2);
-	if (gettimeofday(&vars.time_start, NULL) || pthread_mutex_unlock(&vars.mutex))//unlock unnecessary unless I go back to locking
+	//if (gettimeofday(&vars.time_start, NULL) || pthread_mutex_unlock(&vars.mutex))//unlock unnecessary unless I go back to locking
+	if (pthread_mutex_unlock(&vars.mutex))//unlock unnecessary unless I go back to locking
 		set_stop(&vars);
+	//printf("before main_loop\n");
 	while (all_philos_alive(&vars) && still_philos_to_finish(&vars))
 	{
+		//printf("main_loop\n");
 		if (check_if_dead(&vars))
 			break ;
 	}
+	//printf("after main_loop\n");
 	philo_free_all(&vars);
 	//system("leaks philo");
 	return (0);

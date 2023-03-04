@@ -97,11 +97,11 @@ static int	eat(t_philo *philo)
 
 int	all_philos_alive(t_vars *vars)
 {
-	// if (pthread_mutex_lock(&vars->mutex))
+	//if (pthread_mutex_lock(&vars->mutex))
 	// 	return (0);
 	if (!vars->stop)
 		return (1);
-	// if (pthread_mutex_unlock(&vars->mutex))
+	//if (pthread_mutex_unlock(&vars->mutex))
 	// 	return (0);
 	return (0);
 }
@@ -146,11 +146,11 @@ void	print_message(t_philo *philo, char *msg)
 	set_time_difference(&time_difference, &time_start, &time);
 
 	printf("%s difference->tv_sec: %ld\n", RESET, time_difference.tv_sec);
-	printf("%s difference->tv_usec: %d\n", RESET, time_difference.tv_usec);
+	printf("%s difference->tv_usec: %d\n", RESET, (int)time_difference.tv_usec);
 	
 	printf("%s[%5ld.%03d] %d %s\n",
 		color, time_difference.tv_sec * 1000 + time_difference.tv_usec / 1000,
-			time_difference.tv_usec % 1000, philo->i + 1, msg);
+			(int)(time_difference.tv_usec % 1000), philo->i + 1, msg);
 	// printf("%s[%5ld.%03d] %d %s\n",
 	// 	color, time_difference.tv_sec * 1000 + time_difference.tv_usec / 1000,
 	// 		(int)(time_difference.tv_usec % 1000), philo->i + 1, msg);
@@ -163,6 +163,7 @@ void	set_time_difference(struct timeval *difference,
 	int	a;
 	int	b;
 	
+	//printf("inside set time diff\n");
 	a = 0;
 	b = 0;
 	if (start->tv_usec > end->tv_usec)
@@ -172,4 +173,5 @@ void	set_time_difference(struct timeval *difference,
 	}
 	difference->tv_usec = end->tv_usec + a - start->tv_usec;
 	difference->tv_sec = end->tv_sec - b - start->tv_sec;
+	//printf("finished time diff\n");
 }

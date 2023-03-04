@@ -6,7 +6,7 @@
 /*   By: kkaczoro <kkaczoro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 12:06:13 by kkaczoro          #+#    #+#             */
-/*   Updated: 2023/03/04 14:32:35 by kkaczoro         ###   ########.fr       */
+/*   Updated: 2023/03/04 16:51:47 by kkaczoro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ void	*routine(void *pnt)
 	t_philo	*philo;
 
 	philo = (t_philo *)pnt;
+	//printf("am i here 1 %d\n", philo->i);
 	if (all_philos_alive(philo->vars) && philo->i % 2)
 	{
 		// if (usleep(philo->vars->time_to_eat * 1000))
@@ -32,14 +33,24 @@ void	*routine(void *pnt)
 		wait_interval(&philo->vars->time_start, philo->vars->time_to_eat * 1000);
 		//philo->time_to_die -= philo->vars->time_to_eat;
 	}
+	//printf("am i here 2 %d\n", philo->i);
 	while (all_philos_alive(philo->vars))//&& philo->time_to_die > 0)
 	{
-		if (philo->vars->nb_philos != 1 && eat(philo))//not sure if first part of statement necessary to circumvent the rand case with only 1 philo and 1 fork, may occure with multiple as well
+		if (eat(philo))//not sure if first part of statement necessary to circumvent the rand case with only 1 philo and 1 fork, may occure with multiple as well
 			break ;
 	
 		if (philo->vars->argc == 6 && !philo->nb_times_to_eat)
 		{
-			philo->vars->nb_philos_to_finish--;			
+			
+			//philo->vars->nb_philos_to_finish--;	
+			//printf("%d in end if1\n", philo->i + 1);	
+			if (pthread_mutex_lock(&philo->vars->mutex2))
+				return (0);
+			//printf("%d in end if2\n", philo->i + 1);
+			philo->vars->nb_philos_to_finish--;	
+			if (pthread_mutex_unlock(&philo->vars->mutex2))
+				return (0);	
+			
 			break ;
 		}	
 			
@@ -49,6 +60,7 @@ void	*routine(void *pnt)
 
 		print_message(philo, "is thinking");
 	}
+	//printf("%d end\n", philo->i + 1);
 	return (NULL);
 }
 
@@ -62,6 +74,10 @@ static int	eat(t_philo *philo)
 	i_philo_right = philo->i + 1;
 	if (i_philo_right == philo->vars->nb_philos)
 		i_philo_right = 0;
+	
+	// if (i_philo_right == philo->i)
+	// 	return (1);
+	
 	if (pthread_mutex_lock(&philo->vars->philos[i_philo_right].fork_left))
 		return (1);
 	print_message(philo, "has taken a fork");
@@ -123,10 +139,21 @@ void	print_message(t_philo *philo, char *msg)
 	time_start = philo->vars->time_start;
 	if (gettimeofday(&time, NULL))
 		return ;
+	
+	printf("%s time_start->tv_sec: %ld\n", RESET, time_start.tv_sec);
+	printf("%s time.tv_sec: %ld\n", RESET, time.tv_sec);
+	
 	set_time_difference(&time_difference, &time_start, &time);
+
+	printf("%s difference->tv_sec: %ld\n", RESET, time_difference.tv_sec);
+	printf("%s difference->tv_usec: %d\n", RESET, time_difference.tv_usec);
+	
 	printf("%s[%5ld.%03d] %d %s\n",
 		color, time_difference.tv_sec * 1000 + time_difference.tv_usec / 1000,
-			(int)(time_difference.tv_usec % 1000), philo->i + 1, msg);
+			time_difference.tv_usec % 1000, philo->i + 1, msg);
+	// printf("%s[%5ld.%03d] %d %s\n",
+	// 	color, time_difference.tv_sec * 1000 + time_difference.tv_usec / 1000,
+	// 		(int)(time_difference.tv_usec % 1000), philo->i + 1, msg);
 			//undo the int cast for mac
 }
 
@@ -138,7 +165,7 @@ void	set_time_difference(struct timeval *difference,
 	
 	a = 0;
 	b = 0;
-	if (end->tv_usec - start->tv_usec < 0)
+	if (start->tv_usec > end->tv_usec)
 	{
 		a = 1000000;
 		b = 1;

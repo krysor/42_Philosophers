@@ -6,7 +6,7 @@
 /*   By: kkaczoro <kkaczoro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 14:43:30 by kkaczoro          #+#    #+#             */
-/*   Updated: 2023/03/04 14:19:53 by kkaczoro         ###   ########.fr       */
+/*   Updated: 2023/03/04 15:03:35 by kkaczoro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,9 @@ typedef struct s_vars
 
 
 	pthread_mutex_t	mutex;
+	
+	pthread_mutex_t	mutex2;
+	
 
 	struct timeval	time_start;
 }					t_vars;

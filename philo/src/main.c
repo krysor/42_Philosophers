@@ -12,10 +12,10 @@
 
 #include "philo.h"
 
-void	set_stop(t_vars *vars);
-int		check_if_dead(t_vars *vars);
-int		still_philos_to_finish(t_vars *vars);
-int		set_philo_start_time(t_vars *vars);
+static int	set_philo_start_time(t_vars *vars);
+static void	set_stop(t_vars *vars);
+static int	still_philos_to_finish(t_vars *vars);
+static int	check_if_dead(t_vars *vars);
 
 int	main(int argc, char *argv[])
 {
@@ -36,12 +36,12 @@ int	main(int argc, char *argv[])
 		if (check_if_dead(&vars))
 			break ;
 	}
-	philo_free_all(&vars);
+	clean_all(&vars);
 	//system("leaks philo");
 	return (0);
 }
 
-int	set_philo_start_time(t_vars *vars)
+static int	set_philo_start_time(t_vars *vars)
 {
 	int	i;
 	t_philo *philo;
@@ -56,7 +56,16 @@ int	set_philo_start_time(t_vars *vars)
 	return (0);
 }
 
-int	still_philos_to_finish(t_vars *vars)
+static void	set_stop(t_vars *vars)
+{
+	if (pthread_mutex_lock(&vars->mutex_stop))
+		return ;
+	vars->stop = 1;
+	if (pthread_mutex_unlock(&vars->mutex_stop))
+		return ;
+}
+
+static int	still_philos_to_finish(t_vars *vars)
 {
 	int	result;
 	
@@ -72,14 +81,7 @@ int	still_philos_to_finish(t_vars *vars)
 	return (result);
 }
 
-void	set_stop(t_vars *vars)
-{
-	pthread_mutex_lock(&vars->mutex_stop);
-	vars->stop = 1;
-	pthread_mutex_unlock(&vars->mutex_stop);
-}
-
-int	check_if_dead(t_vars *vars)
+static int	check_if_dead(t_vars *vars)
 {
 	int				i;
 	struct timeval	time_now;
@@ -102,24 +104,4 @@ int	check_if_dead(t_vars *vars)
 		}
 	}
 	return (0);
-}
-
-int	philo_free_all(t_vars *vars)
-{
-	int	i;
-
-	i = -1;
-	while (++i < vars->nb_philos)
-		pthread_join(vars->philos[i].thread, NULL);
-	i = -1;
-	while (++i < vars->nb_philos)
-	{
-		pthread_mutex_destroy(&vars->philos[i].fork_left);
-		pthread_mutex_destroy(&vars->philos[i].mutex_time_last_meal);
-	}
-	free(vars->philos);
-	pthread_mutex_destroy(&vars->mutex_stop);
-	pthread_mutex_destroy(&vars->mutex_nb_philos_to_finish);
-	pthread_mutex_destroy(&vars->mutex_print);
-	return (1);
 }

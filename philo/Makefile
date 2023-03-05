@@ -3,6 +3,7 @@ CFILES	= 	\
 			ft_atoi.c \
 			routine.c \
 			init_vars.c \
+			main_utils.c
 			
 SRCS 	= $(addprefix src/, ${CFILES})
 
@@ -13,7 +14,7 @@ NAME	= philo
 CC		= cc
 RM		= rm -f
 
-CFLAGS	= -Wall -Wextra -Werror -O3 #-fsanitize=thread #-pthread #-fsanitize=address 
+CFLAGS	= -Wall -Wextra -Werror -pthread #-O3 #-fsanitize=thread #-pthread #-fsanitize=address 
 
 ${NAME}:	${OBJS}
 			${CC} ${CFLAGS} -o ${NAME} ${OBJS}

@@ -133,20 +133,6 @@ void	update_time_last_meal(t_philo *philo, struct timeval *time, int miliseconds
 	pthread_mutex_unlock(&philo->mutex_time_last_meal);
 }
 
-int	all_philos_alive(t_vars *vars)
-{
-	int	result;
-	
-	result = 0;
-	if (pthread_mutex_lock(&vars->mutex_stop))
-	 	return (0);
-	if (!vars->stop)
-		result = 1;;
-	if (pthread_mutex_unlock(&vars->mutex_stop))
-	 	return (0);
-	return (result);
-}
-
 static void wait_interval(struct timeval *time_start, suseconds_t interval)
 //static void	wait_until(t_philo *philo, suseconds_t interval)
 {

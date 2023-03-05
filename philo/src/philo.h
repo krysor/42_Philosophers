@@ -74,11 +74,12 @@ typedef struct s_philo
 int		ft_atoi(const char *nptr);
 int		init_vars(t_vars *vars, char *argv[]);
 void	*routine(void *vars);
-int		philo_free_all(t_vars *vars);
+int		clean_all(t_vars *vars);
 
 int		all_philos_alive(t_vars *vars);
 void	set_time_difference(struct timeval *difference,
 			struct timeval *start, struct timeval *end);
 void	print_message(t_philo *philo, char *msg);
+
 
 #endif

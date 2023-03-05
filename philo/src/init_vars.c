@@ -27,12 +27,12 @@ int	init_vars(t_vars *vars, char *argv[])
 	if (!vars->philos)
 		return (1);
 	if (init_vars_mutex(vars))
-		return (philo_free_all(vars));
+		return (clean_all(vars));
 	i = 0;
 	while (i < vars->nb_philos)
 	{
 		if (philo_new(i++, vars, routine))
-			return (philo_free_all(vars));
+			return (clean_all(vars));
 	}
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: kkaczoro <kkaczoro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 10:11:41 by kkaczoro          #+#    #+#             */
-/*   Updated: 2023/03/05 13:45:34 by kkaczoro         ###   ########.fr       */
+/*   Updated: 2023/03/05 16:02:49 by kkaczoro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,18 @@
 int	philo_new(int i, t_vars *vars, void *(*routine)(void *))
 {
 	t_philo	*philo;
-
+	int		index;
+	//char	color[6];
+	
 	philo = &vars->philos[i];
 	philo->vars = vars;
 	philo->i = i;
-	philo->time_last_meal.tv_sec = philo->vars->time_start.tv_sec;
-	philo->time_last_meal.tv_usec = philo->vars->time_start.tv_usec;
+	
+	index = -1;
+	while (++index < 6)
+		philo->color[index] = RED[index];
+	philo->color[3] = '1' + (philo->i % 7); 
+	
 	if (vars->argc == 6)
 		philo->nb_times_to_eat = vars->nb_times_to_eat;
 	if (pthread_mutex_init(&philo->fork_left, NULL)
@@ -39,13 +45,18 @@ int	philo_free_all(t_vars *vars)
 {
 	int	i;
 	
-	i = 0;
-	while (i < vars->nb_philos)
-		pthread_join(vars->philos[i++].thread, NULL);
-	i = 0;
-	while (i < vars->nb_philos)
-		pthread_mutex_destroy(&vars->philos[i++].fork_left);
+	i = -1;
+	while (++i < vars->nb_philos)
+		pthread_join(vars->philos[i].thread, NULL);
+	i = -1;
+	while (++i < vars->nb_philos)
+	{
+		pthread_mutex_destroy(&vars->philos[i].fork_left);
+		pthread_mutex_destroy(&vars->philos[i].lock_time);
+	}
 	free(vars->philos);
 	pthread_mutex_destroy(&vars->mutex);
+	pthread_mutex_destroy(&vars->mutex2);
+	pthread_mutex_destroy(&vars->mutex_print);
 	return (1);
 }

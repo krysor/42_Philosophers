@@ -6,7 +6,7 @@
 /*   By: kkaczoro <kkaczoro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 12:06:13 by kkaczoro          #+#    #+#             */
-/*   Updated: 2023/03/05 14:01:11 by kkaczoro         ###   ########.fr       */
+/*   Updated: 2023/03/05 16:00:11 by kkaczoro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,21 @@ void	*routine(void *pnt)
 			break;
 			
 		print_message(philo, "is thinking");
+
+		// if (philo->vars->argc == 6 && !philo->nb_times_to_eat)
+		// {
+			
+		// 	//philo->vars->nb_philos_to_finish--;	
+		// 	//printf("%d in end if1\n", philo->i + 1);	
+		// 	if (pthread_mutex_lock(&philo->vars->mutex2))
+		// 		return (0);
+		// 	//printf("%d in end if2\n", philo->i + 1);
+		// 	philo->vars->nb_philos_to_finish--;	
+		// 	if (pthread_mutex_unlock(&philo->vars->mutex2))
+		// 		return (0);	
+			
+		// 	break ;
+		// }	
 	}
 	//printf("%d end\n", philo->i + 1);
 	return (NULL);
@@ -89,9 +104,10 @@ static int	eat(t_philo *philo)
 	print_message(philo, "has taken a fork");
 	print_message(philo, "is eating");
 
-	// if (gettimeofday(&philo->time_last_meal, NULL))
-	// 	return (1);
-	update_time_last_meal(philo, &philo->time_last_meal, philo->vars->time_to_eat);
+
+	//update_time_last_meal(philo, &philo->time_last_meal, philo->vars->time_to_eat + philo->vars->time_to_sleep);
+	if (gettimeofday(&philo->time_last_meal, NULL))
+		return (1);
 		
 	philo->nb_times_to_eat--;
 
@@ -154,16 +170,16 @@ void	print_message(t_philo *philo, char *msg)
 	struct timeval	time_difference;
 	struct timeval	time_start;
 	struct timeval	time;
-	char			color[6];
-	int				i;
+	// char			color[6];
+	// int				i;
 	
 	if (pthread_mutex_lock(&philo->vars->mutex_print))
 		return ;
 	
-	i = -1;
-	while (++i < 6)
-		color[i] = RED[i];
-	color[3] = '1' + (philo->i % 7); 
+	// i = -1;
+	// while (++i < 6)
+	// 	color[i] = RED[i];
+	// color[3] = '1' + (philo->i % 7); 
 	time_start = philo->vars->time_start;
 	if (gettimeofday(&time, NULL))
 		return ;
@@ -171,10 +187,14 @@ void	print_message(t_philo *philo, char *msg)
 	
 	set_time_difference(&time_difference, &time_start, &time);
 
-	// if (!all_philos_alive(philo->vars))
-	// 	return ;
+	if (!all_philos_alive(philo->vars))
+	{
+		pthread_mutex_unlock(&philo->vars->mutex_print);
+		return ;
+	}
+	
 	printf("%s[%5ld.%03d] %d %s\n",
-		color, time_difference.tv_sec * 1000 + time_difference.tv_usec / 1000,
+		philo->color, time_difference.tv_sec * 1000 + time_difference.tv_usec / 1000,
 			(int)(time_difference.tv_usec % 1000), philo->i + 1, msg);
 
 	if (pthread_mutex_unlock(&philo->vars->mutex_print))

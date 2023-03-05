@@ -6,7 +6,7 @@
 /*   By: kkaczoro <kkaczoro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 14:43:30 by kkaczoro          #+#    #+#             */
-/*   Updated: 2023/03/05 13:44:20 by kkaczoro         ###   ########.fr       */
+/*   Updated: 2023/03/05 15:58:02 by kkaczoro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,7 @@ typedef struct s_philo
 	t_vars			*vars;
 	
 	int				i;
+	char			color[6];
 	int				nb_times_to_eat;
 	pthread_t		thread;
 	pthread_mutex_t	fork_left;

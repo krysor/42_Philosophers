@@ -6,7 +6,7 @@
 /*   By: kkaczoro <kkaczoro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 12:02:29 by kkaczoro          #+#    #+#             */
-/*   Updated: 2023/03/05 11:54:52 by kkaczoro         ###   ########.fr       */
+/*   Updated: 2023/03/05 14:03:57 by kkaczoro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,11 +35,10 @@ int	init_vars(t_vars *vars, char *argv[])
 	if (pthread_mutex_init(&vars->mutex2, NULL) || pthread_mutex_lock(&vars->mutex2))//necessary or not?
 		return (philo_free_all(vars));
 
-
 	if (pthread_mutex_init(&vars->mutex_print, NULL))// || pthread_mutex_lock(&vars->mutex2))//necessary or not?
 		return (philo_free_all(vars));
 
-	gettimeofday(&vars->time_start, NULL);
+	//gettimeofday(&vars->time_start, NULL);
 	
 	i = 0;
 	while (i < vars->nb_philos)

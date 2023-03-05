@@ -1,7 +1,6 @@
 CFILES	= 	\
 			main.c \
 			ft_atoi.c \
-			philo_utils.c \
 			routine.c \
 			init_vars.c \
 			
@@ -14,7 +13,7 @@ NAME	= philo
 CC		= cc
 RM		= rm -f
 
-CFLAGS	= -Wall -Wextra -Werror #-fsanitize=thread #-pthread  #-fsanitize=address
+CFLAGS	= -Wall -Wextra -Werror -fsanitize=thread #-pthread #-fsanitize=address #-O3
 
 ${NAME}:	${OBJS}
 			${CC} ${CFLAGS} -o ${NAME} ${OBJS}

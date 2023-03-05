@@ -6,7 +6,7 @@
 /*   By: kkaczoro <kkaczoro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 12:06:13 by kkaczoro          #+#    #+#             */
-/*   Updated: 2023/03/05 16:00:11 by kkaczoro         ###   ########.fr       */
+/*   Updated: 2023/03/05 17:53:50 by kkaczoro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,11 +46,11 @@ void	*routine(void *pnt)
 			
 			//philo->vars->nb_philos_to_finish--;	
 			//printf("%d in end if1\n", philo->i + 1);	
-			if (pthread_mutex_lock(&philo->vars->mutex2))
+			if (pthread_mutex_lock(&philo->vars->mutex_nb_philos_to_finish))
 				return (0);
 			//printf("%d in end if2\n", philo->i + 1);
 			philo->vars->nb_philos_to_finish--;	
-			if (pthread_mutex_unlock(&philo->vars->mutex2))
+			if (pthread_mutex_unlock(&philo->vars->mutex_nb_philos_to_finish))
 				return (0);	
 			
 			break ;
@@ -122,7 +122,7 @@ static int	eat(t_philo *philo)
 
 void	update_time_last_meal(t_philo *philo, struct timeval *time, int miliseconds)
 {
-	pthread_mutex_lock(&philo->lock_time);
+	pthread_mutex_lock(&philo->mutex_time_last_meal);
 	time->tv_usec += miliseconds * 1000;
 	time->tv_sec += miliseconds / 1000;
 	if (time->tv_usec > 1000000)
@@ -130,7 +130,7 @@ void	update_time_last_meal(t_philo *philo, struct timeval *time, int miliseconds
 		time->tv_usec -= 1000000;
 		time->tv_sec += 1;
 	}
-	pthread_mutex_unlock(&philo->lock_time);
+	pthread_mutex_unlock(&philo->mutex_time_last_meal);
 }
 
 int	all_philos_alive(t_vars *vars)
@@ -138,11 +138,11 @@ int	all_philos_alive(t_vars *vars)
 	int	result;
 	
 	result = 0;
-	if (pthread_mutex_lock(&vars->mutex))
+	if (pthread_mutex_lock(&vars->mutex_stop))
 	 	return (0);
 	if (!vars->stop)
 		result = 1;;
-	if (pthread_mutex_unlock(&vars->mutex))
+	if (pthread_mutex_unlock(&vars->mutex_stop))
 	 	return (0);
 	return (result);
 }
@@ -170,33 +170,21 @@ void	print_message(t_philo *philo, char *msg)
 	struct timeval	time_difference;
 	struct timeval	time_start;
 	struct timeval	time;
-	// char			color[6];
-	// int				i;
 	
 	if (pthread_mutex_lock(&philo->vars->mutex_print))
 		return ;
-	
-	// i = -1;
-	// while (++i < 6)
-	// 	color[i] = RED[i];
-	// color[3] = '1' + (philo->i % 7); 
 	time_start = philo->vars->time_start;
 	if (gettimeofday(&time, NULL))
 		return ;
-	
-	
 	set_time_difference(&time_difference, &time_start, &time);
-
 	if (!all_philos_alive(philo->vars))
 	{
 		pthread_mutex_unlock(&philo->vars->mutex_print);
 		return ;
 	}
-	
 	printf("%s[%5ld.%03d] %d %s\n",
 		philo->color, time_difference.tv_sec * 1000 + time_difference.tv_usec / 1000,
 			(int)(time_difference.tv_usec % 1000), philo->i + 1, msg);
-
 	if (pthread_mutex_unlock(&philo->vars->mutex_print))
 		return ;
 }
@@ -207,7 +195,6 @@ void	set_time_difference(struct timeval *difference,
 	int	a;
 	int	b;
 	
-	//printf("inside set time diff\n");
 	a = 0;
 	b = 0;
 	if (start->tv_usec > end->tv_usec)
@@ -217,5 +204,4 @@ void	set_time_difference(struct timeval *difference,
 	}
 	difference->tv_usec = end->tv_usec + a - start->tv_usec;
 	difference->tv_sec = end->tv_sec - b - start->tv_sec;
-	//printf("finished time diff\n");
 }

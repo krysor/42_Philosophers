@@ -6,7 +6,7 @@
 /*   By: kkaczoro <kkaczoro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 12:06:13 by kkaczoro          #+#    #+#             */
-/*   Updated: 2023/03/05 12:17:04 by kkaczoro         ###   ########.fr       */
+/*   Updated: 2023/03/05 14:01:11 by kkaczoro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ void	print_message(t_philo *philo, char *msg);
 
 void	set_time_difference(struct timeval *difference, 
 			struct timeval *start, struct timeval *end);
+
+void	update_time_last_meal(t_philo *philo, struct timeval *time, int miliseconds);
 
 void	*routine(void *pnt)
 {
@@ -54,12 +56,14 @@ void	*routine(void *pnt)
 			break ;
 		}	
 		
+		if (!all_philos_alive(philo->vars))
+			break;
 		print_message(philo, "is sleeping");
 		wait_interval(&philo->time_last_meal, (philo->vars->time_to_eat + philo->vars->time_to_sleep) * 1000);
-		//usleep(philo->vars->time_to_sleep * 1000);
 		
-		//philo->time_to_die -= philo->vars->time_to_sleep;
-
+		if (!all_philos_alive(philo->vars))
+			break;
+			
 		print_message(philo, "is thinking");
 	}
 	//printf("%d end\n", philo->i + 1);
@@ -77,15 +81,18 @@ static int	eat(t_philo *philo)
 	if (i_philo_right == philo->vars->nb_philos)
 		i_philo_right = 0;
 	
-	if (i_philo_right == philo->i)//not sure if this hardcode is necessary
+	if (i_philo_right == philo->i || !all_philos_alive(philo->vars))//not sure if this hardcode is necessary
 		return (1);	
 	
 	if (pthread_mutex_lock(&philo->vars->philos[i_philo_right].fork_left))
 		return (1);
 	print_message(philo, "has taken a fork");
 	print_message(philo, "is eating");
-	if (gettimeofday(&philo->time_last_meal, NULL))
-		return (1);
+
+	// if (gettimeofday(&philo->time_last_meal, NULL))
+	// 	return (1);
+	update_time_last_meal(philo, &philo->time_last_meal, philo->vars->time_to_eat);
+		
 	philo->nb_times_to_eat--;
 
 	wait_interval(&philo->time_last_meal, philo->vars->time_to_eat * 1000);
@@ -95,6 +102,19 @@ static int	eat(t_philo *philo)
 	if (pthread_mutex_unlock(&philo->fork_left))
 		return (1);
 	return (0);
+}
+
+void	update_time_last_meal(t_philo *philo, struct timeval *time, int miliseconds)
+{
+	pthread_mutex_lock(&philo->lock_time);
+	time->tv_usec += miliseconds * 1000;
+	time->tv_sec += miliseconds / 1000;
+	if (time->tv_usec > 1000000)
+	{
+		time->tv_usec -= 1000000;
+		time->tv_sec += 1;
+	}
+	pthread_mutex_unlock(&philo->lock_time);
 }
 
 int	all_philos_alive(t_vars *vars)
@@ -151,6 +171,8 @@ void	print_message(t_philo *philo, char *msg)
 	
 	set_time_difference(&time_difference, &time_start, &time);
 
+	// if (!all_philos_alive(philo->vars))
+	// 	return ;
 	printf("%s[%5ld.%03d] %d %s\n",
 		color, time_difference.tv_sec * 1000 + time_difference.tv_usec / 1000,
 			(int)(time_difference.tv_usec % 1000), philo->i + 1, msg);

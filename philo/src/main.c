@@ -6,7 +6,7 @@
 /*   By: kkaczoro <kkaczoro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 14:36:08 by kkaczoro          #+#    #+#             */
-/*   Updated: 2023/03/05 12:06:08 by kkaczoro         ###   ########.fr       */
+/*   Updated: 2023/03/05 13:50:05 by kkaczoro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,8 +77,9 @@ int	check_if_dead(t_vars *vars)
 	i = -1;
 	while (++i < vars->nb_philos)
 	{
+		pthread_mutex_lock(&vars->philos[i].lock_time);
 		set_time_difference(&interval, &(vars->philos[i].time_last_meal), &time_now);
-
+		pthread_mutex_unlock(&vars->philos[i].lock_time);
 		// printf("%stime_last_meal.tv_sec: %ld\n", RESET, vars->philos[i].time_last_meal.tv_sec);
 		// printf("%stime_now.tv_sec: %ld\n", RESET, time_now.tv_sec);
 		// printf("%sinterval.tv_sec: %ld\n", RESET, interval.tv_sec);

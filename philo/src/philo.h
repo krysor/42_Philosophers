@@ -6,7 +6,7 @@
 /*   By: kkaczoro <kkaczoro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 14:43:30 by kkaczoro          #+#    #+#             */
-/*   Updated: 2023/03/05 12:03:33 by kkaczoro         ###   ########.fr       */
+/*   Updated: 2023/03/05 13:44:20 by kkaczoro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,8 +70,12 @@ typedef struct s_philo
 	int				nb_times_to_eat;
 	pthread_t		thread;
 	pthread_mutex_t	fork_left;
+	
+
 
 	struct timeval	time_last_meal;
+	
+	pthread_mutex_t	lock_time;
 }					t_philo;
 
 int		ft_atoi(const char *nptr);

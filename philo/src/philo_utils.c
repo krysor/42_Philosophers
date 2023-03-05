@@ -6,7 +6,7 @@
 /*   By: kkaczoro <kkaczoro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 10:11:41 by kkaczoro          #+#    #+#             */
-/*   Updated: 2023/03/05 12:03:50 by kkaczoro         ###   ########.fr       */
+/*   Updated: 2023/03/05 13:45:34 by kkaczoro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,12 @@ int	philo_new(int i, t_vars *vars, void *(*routine)(void *))
 	if (vars->argc == 6)
 		philo->nb_times_to_eat = vars->nb_times_to_eat;
 	if (pthread_mutex_init(&philo->fork_left, NULL)
-		|| pthread_create(&philo->thread, NULL, routine, &vars->philos[i]))
+		|| pthread_create(&philo->thread, NULL, routine, &vars->philos[i])
+		|| pthread_mutex_init(&philo->lock_time, NULL))//check if for sure here
 	{
 		pthread_join(philo->thread, NULL);
 		pthread_mutex_destroy(&philo->fork_left);
+		pthread_mutex_destroy(&philo->lock_time);//check if for sure here
 		return (1);
 	}
 	return (0);

@@ -6,7 +6,7 @@
 /*   By: kkaczoro <kkaczoro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 12:06:13 by kkaczoro          #+#    #+#             */
-/*   Updated: 2023/03/05 17:53:50 by kkaczoro         ###   ########.fr       */
+/*   Updated: 2023/03/05 18:20:44 by kkaczoro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,7 +159,7 @@ static void wait_interval(struct timeval *time_start, suseconds_t interval)
 	while (((time.tv_sec - time_start->tv_sec) * 1000000 
 			+ time.tv_usec - time_start->tv_usec) < interval)
 	{
-		usleep(1);
+		usleep(100);
 		if (gettimeofday(&time, NULL))
 			return ;
 	}

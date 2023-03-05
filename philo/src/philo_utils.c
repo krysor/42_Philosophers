@@ -6,7 +6,7 @@
 /*   By: kkaczoro <kkaczoro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 10:11:41 by kkaczoro          #+#    #+#             */
-/*   Updated: 2023/03/03 12:38:09 by kkaczoro         ###   ########.fr       */
+/*   Updated: 2023/03/05 12:03:50 by kkaczoro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,8 @@ int	philo_new(int i, t_vars *vars, void *(*routine)(void *))
 	philo = &vars->philos[i];
 	philo->vars = vars;
 	philo->i = i;
-	//philo->time_to_die = vars->time_to_die;
 	philo->time_last_meal.tv_sec = philo->vars->time_start.tv_sec;
 	philo->time_last_meal.tv_usec = philo->vars->time_start.tv_usec;
-	
-	//if (gettimeofday(&philo->time_last_meal, NULL))//replace by start time
-	//	return (1);
 	if (vars->argc == 6)
 		philo->nb_times_to_eat = vars->nb_times_to_eat;
 	if (pthread_mutex_init(&philo->fork_left, NULL)

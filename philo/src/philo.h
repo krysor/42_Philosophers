@@ -6,7 +6,7 @@
 /*   By: kkaczoro <kkaczoro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 14:43:30 by kkaczoro          #+#    #+#             */
-/*   Updated: 2023/03/04 15:03:35 by kkaczoro         ###   ########.fr       */
+/*   Updated: 2023/03/05 12:03:33 by kkaczoro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,8 @@ typedef struct s_vars
 	pthread_mutex_t	mutex;
 	
 	pthread_mutex_t	mutex2;
+
+	pthread_mutex_t	mutex_print;
 	
 
 	struct timeval	time_start;
@@ -65,7 +67,6 @@ typedef struct s_philo
 	t_vars			*vars;
 	
 	int				i;
-	//int				time_to_die;
 	int				nb_times_to_eat;
 	pthread_t		thread;
 	pthread_mutex_t	fork_left;

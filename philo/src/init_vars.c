@@ -32,7 +32,7 @@ int	init_vars(t_vars *vars, char *argv[])
 	if (pthread_mutex_init(&vars->mutex, NULL) || pthread_mutex_lock(&vars->mutex))//necessary or not?
 		return (philo_free_all(vars));
 	
-	if (pthread_mutex_init(&vars->mutex2, NULL))// || pthread_mutex_lock(&vars->mutex2))//necessary or not?
+	if (pthread_mutex_init(&vars->mutex2, NULL) || pthread_mutex_lock(&vars->mutex2))//necessary or not?
 		return (philo_free_all(vars));
 
 	gettimeofday(&vars->time_start, NULL);

@@ -97,12 +97,12 @@ static int	eat(t_philo *philo)
 
 int	all_philos_alive(t_vars *vars)
 {
-	//if (pthread_mutex_lock(&vars->mutex))
-	// 	return (0);
+	if (pthread_mutex_lock(&vars->mutex))
+	 	return (0);
 	if (!vars->stop)
 		return (1);
-	//if (pthread_mutex_unlock(&vars->mutex))
-	// 	return (0);
+	if (pthread_mutex_unlock(&vars->mutex))
+	 	return (0);
 	return (0);
 }
 

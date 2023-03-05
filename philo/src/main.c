@@ -26,7 +26,7 @@ int	main(int argc, char *argv[])
 	if (init_vars(&vars, argv))
 		return (2);
 	//if (gettimeofday(&vars.time_start, NULL) || pthread_mutex_unlock(&vars.mutex))//unlock unnecessary unless I go back to locking
-	if (pthread_mutex_unlock(&vars.mutex))//unlock unnecessary unless I go back to locking
+	if (pthread_mutex_unlock(&vars.mutex) || pthread_mutex_unlock(&vars.mutex2))//unlock unnecessary unless I go back to locking
 		set_stop(&vars);
 	//printf("before main_loop\n");
 	while (all_philos_alive(&vars) && still_philos_to_finish(&vars))

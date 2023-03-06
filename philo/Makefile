@@ -14,7 +14,7 @@ NAME	= philo
 CC		= cc
 RM		= rm -f
 
-CFLAGS	= -Wall -Wextra -Werror -fsanitize=thread #-O3 #-pthread #-fsanitize=thread #-fsanitize=address 
+CFLAGS	= -Wall -Wextra -Werror -O3
 
 ${NAME}:	${OBJS}
 			${CC} ${CFLAGS} -o ${NAME} ${OBJS}

@@ -6,7 +6,7 @@
 /*   By: kkaczoro <kkaczoro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 11:56:18 by kkaczoro          #+#    #+#             */
-/*   Updated: 2023/03/06 12:28:18 by kkaczoro         ###   ########.fr       */
+/*   Updated: 2023/03/06 12:56:35 by kkaczoro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,9 @@ int	clean_all(t_vars *vars)
 {
 	int	i;
 
+	pthread_mutex_lock(&vars->mutex_stop);
+	vars->stop = 1;
+	pthread_mutex_unlock(&vars->mutex_stop);
 	i = -1;
 	while (++i < vars->nb_philos)
 		pthread_join(vars->philos[i].thread, NULL);

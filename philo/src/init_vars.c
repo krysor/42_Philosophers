@@ -6,7 +6,7 @@
 /*   By: kkaczoro <kkaczoro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 12:02:29 by kkaczoro          #+#    #+#             */
-/*   Updated: 2023/03/06 11:11:09 by kkaczoro         ###   ########.fr       */
+/*   Updated: 2023/03/06 12:46:08 by kkaczoro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,6 @@ static int	init_vars_mutex(t_vars *vars)
 		|| pthread_mutex_init(&vars->mutex_print, NULL))
 		return (1);
 	pthread_mutex_lock(&vars->mutex_stop);
-	pthread_mutex_lock(&vars->mutex_nb_philos_to_finish);
 	return (0);
 }
 
@@ -83,11 +82,6 @@ static int	philo_new(int i, t_vars *vars, void *(*routine)(void *))
 	if (pthread_create(&philo->thread, NULL, routine, &vars->philos[i])
 		|| pthread_mutex_init(&philo->fork_left, NULL)
 		|| pthread_mutex_init(&philo->mutex_time_last_meal, NULL))
-	{
-		pthread_join(philo->thread, NULL);
-		pthread_mutex_destroy(&philo->fork_left);
-		pthread_mutex_destroy(&philo->mutex_time_last_meal);
 		return (1);
-	}
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: kkaczoro <kkaczoro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 11:56:18 by kkaczoro          #+#    #+#             */
-/*   Updated: 2023/03/06 11:57:14 by kkaczoro         ###   ########.fr       */
+/*   Updated: 2023/03/06 12:28:18 by kkaczoro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,4 +65,24 @@ void	set_time_difference(struct timeval *difference,
 	}
 	difference->tv_usec = end->tv_usec + a - start->tv_usec;
 	difference->tv_sec = end->tv_sec - b - start->tv_sec;
+}
+
+int	clean_all(t_vars *vars)
+{
+	int	i;
+
+	i = -1;
+	while (++i < vars->nb_philos)
+		pthread_join(vars->philos[i].thread, NULL);
+	i = -1;
+	while (++i < vars->nb_philos)
+	{
+		pthread_mutex_destroy(&vars->philos[i].fork_left);
+		pthread_mutex_destroy(&vars->philos[i].mutex_time_last_meal);
+	}
+	free(vars->philos);
+	pthread_mutex_destroy(&vars->mutex_stop);
+	pthread_mutex_destroy(&vars->mutex_nb_philos_to_finish);
+	pthread_mutex_destroy(&vars->mutex_print);
+	return (1);
 }

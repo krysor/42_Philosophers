@@ -6,7 +6,7 @@
 /*   By: kkaczoro <kkaczoro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 12:06:13 by kkaczoro          #+#    #+#             */
-/*   Updated: 2023/03/06 12:07:02 by kkaczoro         ###   ########.fr       */
+/*   Updated: 2023/03/06 12:52:13 by kkaczoro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,6 @@
 
 static int	eat(t_philo *philo);
 static void	wait_interval(struct timeval *time_start, suseconds_t interval);
-// static void	update_time_last_meal(t_philo *philo,
-// 				struct timeval *time, int miliseconds);
 
 void	*routine(void *pnt)
 {
@@ -65,20 +63,6 @@ static int	eat(t_philo *philo)
 	pthread_mutex_unlock(&philo->fork_left);
 	return (0);
 }
-
-// static void	update_time_last_meal(t_philo *philo,
-// 				struct timeval *time, int miliseconds)
-// {
-// 	pthread_mutex_lock(&philo->mutex_time_last_meal);
-// 	time->tv_usec += miliseconds * 1000;
-// 	time->tv_sec += miliseconds / 1000;
-// 	if (time->tv_usec > 1000000)
-// 	{
-// 		time->tv_usec -= 1000000;
-// 		time->tv_sec += 1;
-// 	}
-// 	pthread_mutex_unlock(&philo->mutex_time_last_meal);
-// }
 
 static void	wait_interval(struct timeval *time_start, suseconds_t interval)
 {

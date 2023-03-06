@@ -6,7 +6,7 @@
 /*   By: kkaczoro <kkaczoro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 14:36:08 by kkaczoro          #+#    #+#             */
-/*   Updated: 2023/03/06 12:08:14 by kkaczoro         ###   ########.fr       */
+/*   Updated: 2023/03/06 12:36:01 by kkaczoro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ int	main(int argc, char *argv[])
 		vars.stop = 1;
 	set_philo_start_time(&vars);
 	pthread_mutex_unlock(&vars.mutex_stop);
-	pthread_mutex_unlock(&vars.mutex_nb_philos_to_finish);
 	while (all_philos_alive(&vars) && still_philos_to_finish(&vars))
 	{
 		if (check_if_dead(&vars))
@@ -79,15 +78,14 @@ static int	check_if_dead(t_vars *vars)
 	struct timeval	time_now;
 	struct timeval	interval;
 
+	i = -1;
 	if (gettimeofday(&time_now, NULL))
 		return (1);
-	i = -1;
 	while (++i < vars->nb_philos)
 	{
 		pthread_mutex_lock(&vars->philos[i].mutex_time_last_meal);
 		set_time_difference(&interval,
 			&(vars->philos[i].time_last_meal), &time_now);
-		pthread_mutex_unlock(&vars->philos[i].mutex_time_last_meal);
 		if (interval.tv_sec * 1000 + interval.tv_usec / 1000
 			>= vars->time_to_die)
 		{
@@ -95,28 +93,10 @@ static int	check_if_dead(t_vars *vars)
 			pthread_mutex_lock(&vars->mutex_stop);
 			vars->stop = 1;
 			pthread_mutex_unlock(&vars->mutex_stop);
+			pthread_mutex_unlock(&vars->philos[i].mutex_time_last_meal);
 			return (1);
 		}
+		pthread_mutex_unlock(&vars->philos[i].mutex_time_last_meal);
 	}
 	return (0);
-}
-
-int	clean_all(t_vars *vars)
-{
-	int	i;
-
-	i = -1;
-	while (++i < vars->nb_philos)
-		pthread_join(vars->philos[i].thread, NULL);
-	i = -1;
-	while (++i < vars->nb_philos)
-	{
-		pthread_mutex_destroy(&vars->philos[i].fork_left);
-		pthread_mutex_destroy(&vars->philos[i].mutex_time_last_meal);
-	}
-	free(vars->philos);
-	pthread_mutex_destroy(&vars->mutex_stop);
-	pthread_mutex_destroy(&vars->mutex_nb_philos_to_finish);
-	pthread_mutex_destroy(&vars->mutex_print);
-	return (1);
 }

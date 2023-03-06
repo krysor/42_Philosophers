@@ -6,7 +6,7 @@
 /*   By: kkaczoro <kkaczoro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 14:43:30 by kkaczoro          #+#    #+#             */
-/*   Updated: 2023/03/06 11:40:27 by kkaczoro         ###   ########.fr       */
+/*   Updated: 2023/03/06 12:54:01 by kkaczoro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,6 @@
 # define NB_TIMES_EACH_PHILO_MUST_EAT	5
 
 # define RED		"\x1B[31m"
-// # define GREEN		"\x1B[32m"
-// # define YELLOW		"\x1B[33m"
-// # define BLUE		"\x1B[34m"
-// # define MAGENTA	"\x1B[35m"
-// # define CYAN		"\x1B[36m"
-// # define WHITE		"\x1B[37m"
 # define RESET		"\x1B[0m"
 
 # include <stdio.h>
@@ -47,11 +41,11 @@ typedef struct s_vars
 
 	int				nb_times_to_eat;
 	int				nb_philos_to_finish;
+	pthread_mutex_t	mutex_nb_philos_to_finish;
 
 	t_philo			*philos;
 
 	pthread_mutex_t	mutex_stop;
-	pthread_mutex_t	mutex_nb_philos_to_finish;
 	pthread_mutex_t	mutex_print;
 
 	struct timeval	time_start;
@@ -65,6 +59,7 @@ typedef struct s_philo
 	char			color[6];
 	pthread_t		thread;
 	pthread_mutex_t	fork_left;
+
 	struct timeval	time_last_meal;
 	pthread_mutex_t	mutex_time_last_meal;
 
@@ -76,9 +71,9 @@ int		init_vars(t_vars *vars, char *argv[]);
 void	*routine(void *vars);
 
 int		all_philos_alive(t_vars *vars);
+void	print_message(t_philo *philo, char *msg);
 void	set_time_difference(struct timeval *difference,
 			struct timeval *start, struct timeval *end);
-void	print_message(t_philo *philo, char *msg);
 int		clean_all(t_vars *vars);
 
 #endif

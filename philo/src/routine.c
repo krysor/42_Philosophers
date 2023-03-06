@@ -22,64 +22,36 @@ void	set_time_difference(struct timeval *difference,
 
 void	update_time_last_meal(t_philo *philo, struct timeval *time, int miliseconds);
 
-void	*routine(void *pnt)
+//gotta check pthread_mutex_(un)lock return values or nah?
+void	*routine(void *pnt)//check if difference when not checking if alive inside the routine
 {
 	t_philo	*philo;
 
 	philo = (t_philo *)pnt;
-	//printf("am i here 1 %d\n", philo->i);
 	if (all_philos_alive(philo->vars) && philo->i % 2)
-	{
-		// if (usleep(philo->vars->time_to_eat * 1000))
-		// 	return (NULL);
 		wait_interval(&philo->vars->time_start, philo->vars->time_to_eat * 1000);
-		//philo->time_to_die -= philo->vars->time_to_eat;
-	}
-	//printf("am i here 2 %d\n", philo->i);
-	while (all_philos_alive(philo->vars))//&& philo->time_to_die > 0)
+	while (all_philos_alive(philo->vars))
 	{
-		if (eat(philo))//not sure if first part of statement necessary to circumvent the rand case with only 1 philo and 1 fork, may occure with multiple as well
+		if (eat(philo))
 			break ;
-	
-		if (philo->vars->argc == 6 && !philo->nb_times_to_eat)
+		if (philo->vars->argc == 6 && !philo->nb_times_to_eat)//this one should at the end of the routine
 		{
-			
-			//philo->vars->nb_philos_to_finish--;	
-			//printf("%d in end if1\n", philo->i + 1);	
 			if (pthread_mutex_lock(&philo->vars->mutex_nb_philos_to_finish))
 				return (0);
-			//printf("%d in end if2\n", philo->i + 1);
 			philo->vars->nb_philos_to_finish--;	
 			if (pthread_mutex_unlock(&philo->vars->mutex_nb_philos_to_finish))
 				return (0);	
-			
-			break ;
+			break ;//or maybe this break is not necessary?
 		}	
 		
-		if (!all_philos_alive(philo->vars))
-			break;
+		//if (!all_philos_alive(philo->vars))
+		//	break;
 		print_message(philo, "is sleeping");
 		wait_interval(&philo->time_last_meal, (philo->vars->time_to_eat + philo->vars->time_to_sleep) * 1000);
 		
-		if (!all_philos_alive(philo->vars))
-			break;
-			
-		print_message(philo, "is thinking");
-
-		// if (philo->vars->argc == 6 && !philo->nb_times_to_eat)
-		// {
-			
-		// 	//philo->vars->nb_philos_to_finish--;	
-		// 	//printf("%d in end if1\n", philo->i + 1);	
-		// 	if (pthread_mutex_lock(&philo->vars->mutex2))
-		// 		return (0);
-		// 	//printf("%d in end if2\n", philo->i + 1);
-		// 	philo->vars->nb_philos_to_finish--;	
-		// 	if (pthread_mutex_unlock(&philo->vars->mutex2))
-		// 		return (0);	
-			
-		// 	break ;
-		// }	
+		//if (!all_philos_alive(philo->vars))
+		//	break;
+		print_message(philo, "is thinking");	
 	}
 	//printf("%d end\n", philo->i + 1);
 	return (NULL);
@@ -96,7 +68,7 @@ static int	eat(t_philo *philo)
 	if (i_philo_right == philo->vars->nb_philos)
 		i_philo_right = 0;
 	
-	if (i_philo_right == philo->i || !all_philos_alive(philo->vars))//not sure if this hardcode is necessary
+	if (i_philo_right == philo->i)// || !all_philos_alive(philo->vars))//not sure if this hardcode is necessary
 		return (1);	
 	
 	if (pthread_mutex_lock(&philo->vars->philos[i_philo_right].fork_left))
@@ -123,8 +95,8 @@ static int	eat(t_philo *philo)
 void	update_time_last_meal(t_philo *philo, struct timeval *time, int miliseconds)
 {
 	pthread_mutex_lock(&philo->mutex_time_last_meal);
-	time->tv_usec += miliseconds * 1000;
-	time->tv_sec += miliseconds / 1000;
+	time->tv_usec += miliseconds * 1000;//store miliseconds as struct timeval?
+	time->tv_sec += miliseconds / 1000;//
 	if (time->tv_usec > 1000000)
 	{
 		time->tv_usec -= 1000000;
@@ -142,7 +114,7 @@ static void wait_interval(struct timeval *time_start, suseconds_t interval)
 	//time_start = &philo->vars->time_start;
 	if (gettimeofday(&time, NULL))
 		return ;
-	while (((time.tv_sec - time_start->tv_sec) * 1000000 
+	while (((time.tv_sec - time_start->tv_sec) * 1000000
 			+ time.tv_usec - time_start->tv_usec) < interval)
 	{
 		usleep(100);

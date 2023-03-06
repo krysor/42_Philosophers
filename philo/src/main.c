@@ -31,7 +31,7 @@ int	main(int argc, char *argv[])
 		|| pthread_mutex_unlock(&vars.mutex_stop)
 		|| pthread_mutex_unlock(&vars.mutex_nb_philos_to_finish))
 		set_stop(&vars);
-	while (all_philos_alive(&vars) && still_philos_to_finish(&vars))
+	while (all_philos_alive(&vars) && still_philos_to_finish(&vars))//consider only using 1 stack variable for this double check
 	{
 		if (check_if_dead(&vars))
 			break ;
@@ -43,8 +43,8 @@ int	main(int argc, char *argv[])
 
 static int	set_philo_start_time(t_vars *vars)
 {
-	int	i;
-	t_philo *philo;
+	int		i;
+	t_philo	*philo;
 
 	i = 0;
 	while (i < vars->nb_philos)
@@ -68,16 +68,16 @@ static void	set_stop(t_vars *vars)
 static int	still_philos_to_finish(t_vars *vars)
 {
 	int	result;
-	
+
 	if (vars->argc != 6)
 		return (1);
 	result = 0;
 	if (pthread_mutex_lock(&vars->mutex_nb_philos_to_finish))
 		return (0);
-	if (vars->nb_philos_to_finish)
+	if (vars->nb_philos_to_finish)//if 0, change stack value stop
 		result = 1;
 	if (pthread_mutex_unlock(&vars->mutex_nb_philos_to_finish))
-		return (0);	
+		return (0);
 	return (result);
 }
 
@@ -93,10 +93,11 @@ static int	check_if_dead(t_vars *vars)
 	while (++i < vars->nb_philos)
 	{
 		pthread_mutex_lock(&vars->philos[i].mutex_time_last_meal);
-		set_time_difference(&interval, &(vars->philos[i].time_last_meal), &time_now);
+		set_time_difference(&interval,
+			&(vars->philos[i].time_last_meal), &time_now);
 		pthread_mutex_unlock(&vars->philos[i].mutex_time_last_meal);
 		if (interval.tv_sec * 1000 + interval.tv_usec / 1000
-			> vars->time_to_die)
+			> vars->time_to_die)//replace time_to_die type from int to struct timeval
 		{
 			print_message(&vars->philos[i], "died");
 			set_stop(vars);

@@ -6,7 +6,7 @@
 /*   By: kkaczoro <kkaczoro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 12:02:29 by kkaczoro          #+#    #+#             */
-/*   Updated: 2023/03/05 18:18:03 by kkaczoro         ###   ########.fr       */
+/*   Updated: 2023/03/06 11:11:09 by kkaczoro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,11 +58,11 @@ static int	init_vars_atoi(t_vars *vars, char *argv[])
 static int	init_vars_mutex(t_vars *vars)
 {
 	if (pthread_mutex_init(&vars->mutex_stop, NULL)
-		|| pthread_mutex_lock(&vars->mutex_stop)
 		|| pthread_mutex_init(&vars->mutex_nb_philos_to_finish, NULL)
-		|| pthread_mutex_lock(&vars->mutex_nb_philos_to_finish)
 		|| pthread_mutex_init(&vars->mutex_print, NULL))
 		return (1);
+	pthread_mutex_lock(&vars->mutex_stop);
+	pthread_mutex_lock(&vars->mutex_nb_philos_to_finish);
 	return (0);
 }
 

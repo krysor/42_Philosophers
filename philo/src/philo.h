@@ -6,7 +6,7 @@
 /*   By: kkaczoro <kkaczoro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 14:43:30 by kkaczoro          #+#    #+#             */
-/*   Updated: 2023/03/05 18:00:38 by kkaczoro         ###   ########.fr       */
+/*   Updated: 2023/03/06 11:40:27 by kkaczoro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@
 // # define MAGENTA	"\x1B[35m"
 // # define CYAN		"\x1B[36m"
 // # define WHITE		"\x1B[37m"
-// # define RESET		"\x1B[0m"
+# define RESET		"\x1B[0m"
 
 # include <stdio.h>
 # include <pthread.h>
@@ -74,12 +74,11 @@ typedef struct s_philo
 int		ft_atoi(const char *nptr);
 int		init_vars(t_vars *vars, char *argv[]);
 void	*routine(void *vars);
-int		clean_all(t_vars *vars);
 
 int		all_philos_alive(t_vars *vars);
 void	set_time_difference(struct timeval *difference,
 			struct timeval *start, struct timeval *end);
 void	print_message(t_philo *philo, char *msg);
-
+int		clean_all(t_vars *vars);
 
 #endif

@@ -23,6 +23,7 @@ void	set_time_difference(struct timeval *difference,
 void	update_time_last_meal(t_philo *philo, struct timeval *time, int miliseconds);
 
 //gotta check pthread_mutex_(un)lock return values or nah?
+//store ALL the atoi variables as struct timeval instead of int???
 void	*routine(void *pnt)//check if difference when not checking if alive inside the routine
 {
 	t_philo	*philo;
@@ -142,7 +143,7 @@ void	print_message(t_philo *philo, char *msg)
 	}
 	printf("%s[%5ld.%03d] %d %s\n",
 		philo->color, time_difference.tv_sec * 1000 + time_difference.tv_usec / 1000,
-			(int)(time_difference.tv_usec % 1000), philo->i + 1, msg);
+			(int)(time_difference.tv_usec % 1000), philo->i + 1, msg);//speed up the printing?
 	if (pthread_mutex_unlock(&philo->vars->mutex_print))
 		return ;
 }

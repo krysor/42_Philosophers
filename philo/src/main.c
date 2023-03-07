@@ -6,7 +6,7 @@
 /*   By: kkaczoro <kkaczoro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 14:36:08 by kkaczoro          #+#    #+#             */
-/*   Updated: 2023/03/07 10:05:12 by kkaczoro         ###   ########.fr       */
+/*   Updated: 2023/03/07 11:49:00 by kkaczoro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 static void	set_philo_start_time(t_vars *vars);
 static int	still_philos_to_finish(t_vars *vars);
 static int	check_if_dead(t_vars *vars);
+static void	signal_death(t_vars *vars, int i);
 
 int	main(int argc, char *argv[])
 {
@@ -89,10 +90,7 @@ static int	check_if_dead(t_vars *vars)
 		if (interval.tv_sec * 1000 + interval.tv_usec / 1000
 			>= vars->time_to_die)
 		{
-			print_message(&vars->philos[i], "died");
-			pthread_mutex_lock(&vars->mutex_stop);
-			vars->stop = 1;
-			pthread_mutex_unlock(&vars->mutex_stop);
+			signal_death(vars, i);
 			pthread_mutex_unlock(&vars->philos[i].mutex_time_last_meal);
 			pthread_mutex_unlock(&vars->philos[i].fork_left);
 			return (1);
@@ -100,4 +98,12 @@ static int	check_if_dead(t_vars *vars)
 		pthread_mutex_unlock(&vars->philos[i].mutex_time_last_meal);
 	}
 	return (0);
+}
+
+static void	signal_death(t_vars *vars, int i)
+{
+	print_message(&vars->philos[i], "died");
+	pthread_mutex_lock(&vars->mutex_stop);
+	vars->stop = 1;
+	pthread_mutex_unlock(&vars->mutex_stop);
 }

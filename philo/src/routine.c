@@ -6,13 +6,14 @@
 /*   By: kkaczoro <kkaczoro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 12:06:13 by kkaczoro          #+#    #+#             */
-/*   Updated: 2023/03/07 10:26:40 by kkaczoro         ###   ########.fr       */
+/*   Updated: 2023/03/07 12:08:00 by kkaczoro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
 static int	eat(t_philo *philo);
+static void	update_nb_times_to_eat(t_philo *philo);
 static void	wait_interval(struct timeval *time_start, suseconds_t interval);
 
 void	*routine(void *pnt)
@@ -49,19 +50,27 @@ static int	eat(t_philo *philo)
 	pthread_mutex_lock(&philo->vars->philos[i_philo_right].fork_left);
 	print_message(philo, "has taken a fork");
 	print_message(philo, "is eating");
+	pthread_mutex_lock(&philo->mutex_time_last_meal);
 	if (gettimeofday(&philo->time_last_meal, NULL))
-		return (1);	
+		return (1);
+	pthread_mutex_unlock(&philo->mutex_time_last_meal);
+	if (philo->vars->argc == 6)
+		update_nb_times_to_eat(philo);
+	wait_interval(&philo->time_last_meal, philo->vars->time_to_eat * 1000);
+	pthread_mutex_unlock(&philo->vars->philos[i_philo_right].fork_left);
+	pthread_mutex_unlock(&philo->fork_left);
+	return (0);
+}
+
+static void	update_nb_times_to_eat(t_philo *philo)
+{
 	philo->nb_times_to_eat--;
-	if (philo->vars->argc == 6 && philo->nb_times_to_eat == 0)
+	if (philo->nb_times_to_eat == 0)
 	{
 		pthread_mutex_lock(&philo->vars->mutex_nb_philos_to_finish);
 		philo->vars->nb_philos_to_finish--;
 		pthread_mutex_unlock(&philo->vars->mutex_nb_philos_to_finish);
 	}
-	wait_interval(&philo->time_last_meal, philo->vars->time_to_eat * 1000);
-	pthread_mutex_unlock(&philo->vars->philos[i_philo_right].fork_left);
-	pthread_mutex_unlock(&philo->fork_left);
-	return (0);
 }
 
 static void	wait_interval(struct timeval *time_start, suseconds_t interval)

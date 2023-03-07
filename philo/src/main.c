@@ -6,7 +6,7 @@
 /*   By: kkaczoro <kkaczoro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 14:36:08 by kkaczoro          #+#    #+#             */
-/*   Updated: 2023/03/06 12:36:01 by kkaczoro         ###   ########.fr       */
+/*   Updated: 2023/03/07 10:00:27 by kkaczoro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,7 @@ static int	check_if_dead(t_vars *vars)
 			vars->stop = 1;
 			pthread_mutex_unlock(&vars->mutex_stop);
 			pthread_mutex_unlock(&vars->philos[i].mutex_time_last_meal);
+			pthread_mutex_unlock(&vars->philos[i].fork_left);
 			return (1);
 		}
 		pthread_mutex_unlock(&vars->philos[i].mutex_time_last_meal);

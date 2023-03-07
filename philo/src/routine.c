@@ -6,7 +6,7 @@
 /*   By: kkaczoro <kkaczoro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 12:06:13 by kkaczoro          #+#    #+#             */
-/*   Updated: 2023/03/07 09:57:08 by kkaczoro         ###   ########.fr       */
+/*   Updated: 2023/03/07 10:26:40 by kkaczoro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ static int	eat(t_philo *philo)
 	print_message(philo, "has taken a fork");
 	print_message(philo, "is eating");
 	if (gettimeofday(&philo->time_last_meal, NULL))
-		return (1);
+		return (1);	
 	philo->nb_times_to_eat--;
 	if (philo->vars->argc == 6 && philo->nb_times_to_eat == 0)
 	{

@@ -41,12 +41,12 @@ typedef struct s_vars
 
 	int				nb_times_to_eat;
 	int				nb_philos_to_finish;
-	pthread_mutex_t	mutex_nb_philos_to_finish;
+	//pthread_mutex_t	mutex_nb_philos_to_finish;
 
 	t_philo			*philos;
 
-	pthread_mutex_t	mutex_stop;
-	pthread_mutex_t	mutex_print;
+	//pthread_mutex_t	mutex_stop;
+	//pthread_mutex_t	mutex_print;
 
 	struct timeval	time_start;
 }					t_vars;
@@ -60,8 +60,8 @@ typedef struct s_philo
 	pthread_t		thread;
 	pthread_mutex_t	fork_left;
 
-	struct timeval	time_last_meal;
-	pthread_mutex_t	mutex_time_last_meal;
+	//struct timeval	time_last_meal;
+	//pthread_mutex_t	mutex_time_last_meal;
 
 	int				nb_times_to_eat;
 }					t_philo;

@@ -6,7 +6,7 @@
 /*   By: kkaczoro <kkaczoro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 14:43:30 by kkaczoro          #+#    #+#             */
-/*   Updated: 2023/03/11 13:36:02 by kkaczoro         ###   ########.fr       */
+/*   Updated: 2023/03/11 19:25:43 by kkaczoro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,27 +19,32 @@
 # define TIME_TO_SLEEP 					4
 # define NB_TIMES_EACH_PHILO_MUST_EAT	5
 
-# define RED		"\x1B[31m"
-# define RESET		"\x1B[0m"
+# define RED							"\x1B[31m"
+# define RESET							"\x1B[0m"
+
+# define SEM_STOP						"sem_stop"
+# define SEM_PRINT						"sem_print"
+# define SEM_NB_PHILOS_TO_FINISH		"sem_nb_philos_to_finish"
 
 # include <stdio.h>
-# include <pthread.h>
 # include <unistd.h>
 # include <stdlib.h>
 # include <sys/time.h>
+# include <semaphore.h>
 
 typedef struct s_philo	t_philo;
+typedef struct s_vars	t_vars;
 typedef struct s_vars
 {
+	t_vars			*pnt_vars;
 	int				argc;
+
 	int				stop;
 	sem_t			*sem_stop;
 	
 	sem_t			*sem_print;
-	//pthread_mutex_t	mutex_print;
 
 	t_philo			*philos;
-	//pthread_mutex_t	mutex_stop;
 	struct timeval	time_start;
 
 	int		nb_philos;
@@ -64,7 +69,7 @@ typedef struct s_philo
 	pthread_t		thread;
 	pthread_mutex_t	fork_left;
 
-	//struct timeval	time_last_meal;
+	struct timeval	time_last_meal;
 	//pthread_mutex_t	mutex_time_last_meal;
 
 	int				nb_times_to_eat;
@@ -78,6 +83,6 @@ int		all_philos_alive(t_vars *vars);
 void	print_message(t_philo *philo, char *msg);
 void	set_time_difference(struct timeval *difference,
 			struct timeval *start, struct timeval *end);
-int		clean_all(t_vars *vars);
+int		clean_vars(t_vars *vars);
 
 #endif

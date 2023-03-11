@@ -6,7 +6,7 @@
 /*   By: kkaczoro <kkaczoro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 12:06:13 by kkaczoro          #+#    #+#             */
-/*   Updated: 2023/03/07 12:08:00 by kkaczoro         ###   ########.fr       */
+/*   Updated: 2023/03/11 18:38:13 by kkaczoro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,25 +40,25 @@ static int	eat(t_philo *philo)
 {
 	int	i_philo_right;
 
-	pthread_mutex_lock(&philo->fork_left);
+	//pthread_mutex_lock(&philo->fork_left);
 	print_message(philo, "has taken a fork");
 	i_philo_right = philo->i + 1;
 	if (i_philo_right == philo->vars->nb_philos)
 		i_philo_right = 0;
 	if (i_philo_right == philo->i)
 		return (1);
-	pthread_mutex_lock(&philo->vars->philos[i_philo_right].fork_left);
+	//pthread_mutex_lock(&philo->vars->philos[i_philo_right].fork_left);
 	print_message(philo, "has taken a fork");
 	print_message(philo, "is eating");
-	pthread_mutex_lock(&philo->mutex_time_last_meal);
+	//pthread_mutex_lock(&philo->mutex_time_last_meal);
 	if (gettimeofday(&philo->time_last_meal, NULL))
 		return (1);
-	pthread_mutex_unlock(&philo->mutex_time_last_meal);
+	//pthread_mutex_unlock(&philo->mutex_time_last_meal);
 	if (philo->vars->argc == 6)
 		update_nb_times_to_eat(philo);
 	wait_interval(&philo->time_last_meal, philo->vars->time_to_eat * 1000);
-	pthread_mutex_unlock(&philo->vars->philos[i_philo_right].fork_left);
-	pthread_mutex_unlock(&philo->fork_left);
+	//pthread_mutex_unlock(&philo->vars->philos[i_philo_right].fork_left);
+	//pthread_mutex_unlock(&philo->fork_left);
 	return (0);
 }
 
@@ -67,9 +67,9 @@ static void	update_nb_times_to_eat(t_philo *philo)
 	philo->nb_times_to_eat--;
 	if (philo->nb_times_to_eat == 0)
 	{
-		pthread_mutex_lock(&philo->vars->mutex_nb_philos_to_finish);
+		//pthread_mutex_lock(&philo->vars->mutex_nb_philos_to_finish);
 		philo->vars->nb_philos_to_finish--;
-		pthread_mutex_unlock(&philo->vars->mutex_nb_philos_to_finish);
+		//pthread_mutex_unlock(&philo->vars->mutex_nb_philos_to_finish);
 	}
 }
 

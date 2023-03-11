@@ -6,7 +6,7 @@
 /*   By: kkaczoro <kkaczoro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 14:43:30 by kkaczoro          #+#    #+#             */
-/*   Updated: 2023/03/06 12:54:01 by kkaczoro         ###   ########.fr       */
+/*   Updated: 2023/03/11 13:36:02 by kkaczoro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,25 +30,29 @@
 
 typedef struct s_philo	t_philo;
 typedef struct s_vars
-{	
+{
 	int				argc;
 	int				stop;
-
-	int				nb_philos;
-	int				time_to_die;
-	int				time_to_eat;
-	int				time_to_sleep;
-
-	int				nb_times_to_eat;
-	int				nb_philos_to_finish;
-	//pthread_mutex_t	mutex_nb_philos_to_finish;
-
-	t_philo			*philos;
-
-	//pthread_mutex_t	mutex_stop;
+	sem_t			*sem_stop;
+	
+	sem_t			*sem_print;
 	//pthread_mutex_t	mutex_print;
 
+	t_philo			*philos;
+	//pthread_mutex_t	mutex_stop;
 	struct timeval	time_start;
+
+	int		nb_philos;
+	int		time_to_die;
+	int		time_to_eat;
+	int		time_to_sleep;
+
+	int		nb_times_to_eat;
+	int		nb_philos_to_finish;
+	sem_t	*sem_nb_philos_to_finish;
+	//pthread_mutex_t	mutex_nb_philos_to_finish;
+
+
 }					t_vars;
 
 typedef struct s_philo

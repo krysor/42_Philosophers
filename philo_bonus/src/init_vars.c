@@ -6,7 +6,7 @@
 /*   By: kkaczoro <kkaczoro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 12:02:29 by kkaczoro          #+#    #+#             */
-/*   Updated: 2023/03/07 09:56:46 by kkaczoro         ###   ########.fr       */
+/*   Updated: 2023/03/11 13:34:48 by kkaczoro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,9 @@ int	init_vars(t_vars *vars, char *argv[])
 	vars->stop = 0;
 	if (init_vars_atoi(vars, argv))
 		return (1);
-	vars->philos = malloc(sizeof(t_philo) * vars->nb_philos);
-	if (!vars->philos)
-		return (1);
+	//vars->philos = malloc(sizeof(t_philo) * vars->nb_philos);
+	//if (!vars->philos)
+	//	return (1);
 	if (init_vars_mutex(vars))
 		return (clean_all(vars));
 	i = 0;
@@ -55,12 +55,24 @@ static int	init_vars_atoi(t_vars *vars, char *argv[])
 	return (0);
 }
 
-static int	init_vars_mutex(t_vars *vars)
+static int	init_vars_sem(t_vars *vars)
 {
-	if (pthread_mutex_init(&vars->mutex_stop, NULL)
+	// if (pthread_mutex_init(&vars->mutex_stop, NULL)
+	// 	|| pthread_mutex_init(&vars->mutex_nb_philos_to_finish, NULL)
+	// 	|| pthread_mutex_init(&vars->mutex_print, NULL))
+	// 	return (1);
+	
+	if (vars->sem_stop = sem_open("stop", O_CREAT, 1);
+	
+		vars->sem_nb_philos_to_finish = sem_open("nb_philos_to_finish",
+			O_CREAT, vars->nb_philos_to_finish);
+		pthread_mutex_init(&vars->mutex_stop, NULL)
 		|| pthread_mutex_init(&vars->mutex_nb_philos_to_finish, NULL)
 		|| pthread_mutex_init(&vars->mutex_print, NULL))
 		return (1);
+	
+	
+	
 	pthread_mutex_lock(&vars->mutex_stop);
 	return (0);
 }
